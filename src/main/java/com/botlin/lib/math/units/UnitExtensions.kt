@@ -1,4 +1,4 @@
-package com.botlin.lib.units
+package com.botlin.lib.math.units
 
 import edu.wpi.first.units.Units.Amps
 import edu.wpi.first.units.Units.Centimeters
@@ -26,7 +26,7 @@ import edu.wpi.first.units.measure.MomentOfInertia
 import edu.wpi.first.units.measure.Voltage
 
 /*
- * MAJOR SOURCE: Team 78 Air Strike
+ * ORIGINAL SOURCE: Team 78 Air Strike
  * https://github.com/frc78/78-Kotlin-Template/blob/main/src/main/java/frc/robot/lib/Units.kt
  */
 

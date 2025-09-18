@@ -1,6 +1,7 @@
 package gay.zharel.botlin.math.units
 
 import edu.wpi.first.units.*
+import edu.wpi.first.units.Unit
 import edu.wpi.first.units.Units.*
 import edu.wpi.first.units.measure.*
 
@@ -8,6 +9,12 @@ import edu.wpi.first.units.measure.*
  * MAJOR SOURCE: Team 78 Air Strike
  * https://github.com/frc78/78-Kotlin-Template/blob/main/src/main/java/frc/robot/lib/Units.kt
  */
+
+// ANY UNIT
+inline fun <U : Unit, reified M : Measure<U>> Number.inUnit(unit: U): M =
+    unit.of(this.toDouble()) as M
+
+fun <U : Unit, M : Measure<U>> M.to(unit: U): Double = this.`in`(unit)
 
 // DIMENSIONLESS UNITS
 inline val Number.asUnit: Dimensionless
@@ -23,10 +30,12 @@ inline val Number.meter: Distance get() = meters
 inline val Number.millimeters: Distance
     get() = Millimeters.of(this.toDouble())
 inline val Number.millimeter: Distance get() = millimeters
+inline val Number.mm: Distance get() = millimeters
 
 inline val Number.centimeters: Distance
     get() = Centimeters.of(this.toDouble())
 inline val Number.centimeter: Distance get() = centimeters
+inline val Number.cm: Distance get() = centimeters
 
 inline val Number.inches: Distance
     get() = Inches.of(this.toDouble())
@@ -44,6 +53,7 @@ inline val Number.second: Time get() = seconds
 inline val Number.milliseconds: Time
     get() = Milliseconds.of(this.toDouble())
 inline val Number.millisecond: Time get() = milliseconds
+inline val Number.ms: Time get() = milliseconds
 
 inline val Number.microseconds: Time
     get() = Microseconds.of(this.toDouble())
@@ -74,6 +84,7 @@ inline val Number.degree: Angle get() = degrees
     // LINEAR
 inline val Number.metersPerSecond: LinearVelocity
     get() = MetersPerSecond.of(this.toDouble())
+inline val Number.mps: LinearVelocity get() = metersPerSecond
 
 inline val Number.feetPerSecond: LinearVelocity
     get() = FeetPerSecond.of(this.toDouble())
@@ -87,6 +98,7 @@ inline val Number.revolutionsPerSecond: AngularVelocity
 
 inline val Number.rotationsPerSecond: AngularVelocity
     get() = RotationsPerSecond.of(this.toDouble())
+inline val Number.rps: AngularVelocity get() = rotationsPerSecond
 
 inline val Number.rpm
     get() = RPM.of(this.toDouble())
@@ -108,6 +120,7 @@ inline val Number.millihertz: Frequency
     // LINEAR
 inline val Number.metersPerSecondPerSecond: LinearAcceleration
     get() = MetersPerSecondPerSecond.of(this.toDouble())
+inline val Number.mpsSquared: LinearAcceleration get() = metersPerSecondPerSecond
 
 inline val Number.feetPerSecondPerSecond: LinearAcceleration
     get() = FeetPerSecondPerSecond.of(this.toDouble())
@@ -121,6 +134,7 @@ inline val Number.Gs: LinearAcceleration
     // ANGULAR
 inline val Number.rotationsPerSecondPerSecond: AngularAcceleration
     get() = RotationsPerSecondPerSecond.of(this.toDouble())
+inline val Number.rpsSquared: AngularAcceleration get() = rotationsPerSecondPerSecond
 
 inline val Number.radiansPerSecondPerSecond: AngularAcceleration
     get() = RadiansPerSecondPerSecond.of(this.toDouble())

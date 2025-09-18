@@ -37,35 +37,35 @@ import edu.wpi.first.units.measure.Voltage
 // val rotations = Rotations.of(5)
 // val fiveRotationsInDegrees = rotations.degrees
 inline val Distance.inches
-    get() = this.`in`(Inches)
+    get() = this.to(Inches)
 inline val Distance.meters
-    get() = this.`in`(Meters)
+    get() = this.to(Meters)
 inline val Distance.centimeters
-    get() = this.`in`(Centimeters)
+    get() = this.to(Centimeters)
 inline val LinearVelocity.metersPerSecond
-    get() = this.`in`(MetersPerSecond)
+    get() = this.to(MetersPerSecond)
 inline val AngularVelocity.radiansPerSecond
-    get() = this.`in`(RadiansPerSecond)
+    get() = this.to(RadiansPerSecond)
 inline val AngularVelocity.rotationsPerSecond
-    get() = this.`in`(RotationsPerSecond)
+    get() = this.to(RotationsPerSecond)
 inline val AngularVelocity.rpm
-    get() = this.`in`(RPM)
+    get() = this.to(RPM)
 inline val AngularAcceleration.radiansPerSecondPerSecond
-    get() = this.`in`(RadiansPerSecondPerSecond)
+    get() = this.to(RadiansPerSecondPerSecond)
 inline val Voltage.volts
-    get() = this.`in`(Volts)
+    get() = this.to(Volts)
 inline val Angle.radians
-    get() = this.`in`(Radians)
+    get() = this.to(Radians)
 inline val Angle.degrees
-    get() = this.`in`(Degrees)
+    get() = this.to(Degrees)
 inline val Angle.rotations
-    get() = this.`in`(Rotations)
+    get() = this.to(Rotations)
 inline val Current.amps
-    get() = this.`in`(Amps)
+    get() = this.to(Amps)
 inline val Mass.kilograms
-    get() = this.`in`(Kilograms)
+    get() = this.to(Kilograms)
 inline val MomentOfInertia.kilogramSquareMeters
-    get() = this.`in`(KilogramSquareMeters)
+    get() = this.to(KilogramSquareMeters)
 
 fun Angle.toDistance(radius: Distance): Distance = radius * this.radians
 

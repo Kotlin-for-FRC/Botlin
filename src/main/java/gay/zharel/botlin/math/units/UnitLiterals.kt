@@ -1,4 +1,4 @@
-package com.botlin.lib.math.units
+package gay.zharel.botlin.math.units
 
 import edu.wpi.first.units.*
 import edu.wpi.first.units.Units.*

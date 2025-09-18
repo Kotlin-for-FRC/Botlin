@@ -10,8 +10,8 @@
     "jsonUrl": "",
     "javaDependencies": [
         {
-            "groupId": "com.botlin.lib",
-            "artifactId": "Botlin-java",
+            "groupId": "gay.zharel.botlin",
+            "artifactId": "botlin",
             "version": "2025.0.0"
         }
     ],

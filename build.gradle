@@ -1,4 +1,5 @@
 import edu.wpi.first.toolchain.*
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id 'cpp'
@@ -29,7 +30,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_17
 }
 var javaVersion = "17"
-def kotlinJvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.@Companion.fromTarget(javaVersion.toString())
+def kotlinJvmTarget = JvmTarget.@Companion.fromTarget(javaVersion.toString())
 
 // Apply Java configuration
 dependencies {

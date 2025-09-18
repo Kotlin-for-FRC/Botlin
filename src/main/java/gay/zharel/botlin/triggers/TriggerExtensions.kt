@@ -1,4 +1,4 @@
-package com.botlin.lib.triggers
+package gay.zharel.botlin.triggers
 
 import java.util.function.BooleanSupplier
 import edu.wpi.first.wpilibj2.command.button.Trigger

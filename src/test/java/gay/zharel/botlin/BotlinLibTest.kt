@@ -1,7 +1,7 @@
-package com.botlin.lib
+package gay.zharel.botlin
 
-import com.botlin.lib.math.units.meters
-import com.botlin.lib.math.units.yotta
+import gay.zharel.botlin.math.units.meters
+import gay.zharel.botlin.math.units.yotta
 import org.junit.jupiter.api.Test
 
 class BotlinLibTest {

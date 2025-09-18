@@ -47,9 +47,9 @@ ext.addTaskToCopyAllOutputs = { task ->
     copyAllOutputs.from task.archiveFile
 }
 
-def artifactGroupId = 'com.botlin.lib'
-def baseArtifactId = 'Botlin'
-def javaBaseName = "_GROUP_com_botlin_lib_ID_${baseArtifactId}-java_CLS"
+def artifactGroupId = 'gay.zharel.botlin'
+def baseArtifactId = 'botlin'
+def javaBaseName = "_GROUP_gay_zharel_botlin_ID_${baseArtifactId}-java_CLS"
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     archiveClassifier = 'sources'

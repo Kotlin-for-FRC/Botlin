@@ -100,7 +100,7 @@ inline val Number.rotationsPerSecond: AngularVelocity
     get() = RotationsPerSecond.of(this.toDouble())
 inline val Number.rps: AngularVelocity get() = rotationsPerSecond
 
-inline val Number.rpm
+inline val Number.rpm: AngularVelocity
     get() = RPM.of(this.toDouble())
 
 inline val Number.radiansPerSecond: AngularVelocity

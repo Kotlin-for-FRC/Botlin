@@ -1,11 +1,16 @@
 package gay.zharel.botlin.math.units
 
 import edu.wpi.first.units.BaseUnits
+import edu.wpi.first.units.DistanceUnit
+import edu.wpi.first.units.LinearAccelerationUnit
+import edu.wpi.first.units.LinearVelocityUnit
 import edu.wpi.first.units.Units
 import edu.wpi.first.units.Units.*
 import edu.wpi.first.units.Unit
 import edu.wpi.first.units.Measure
+import edu.wpi.first.units.MultUnit
 import edu.wpi.first.units.PerUnit
+import edu.wpi.first.units.TimeUnit
 import edu.wpi.first.units.measure.*
 
 /*
@@ -192,5 +197,48 @@ operator fun <U: Unit, P: Unit> Measure<U>.times(unit: P): Measure<*> = this * u
 operator fun <U: Unit, P: Unit> Measure<U>.div(unit: P): Measure<*> = this / unit.of(1.0)
 infix fun <U: Unit, P: Unit> Measure<U>.per(unit: P): Measure<*> = this / unit.of(1.0)
 
+operator fun <U: Unit, P: Unit> U.times(unit: P): Unit =
+    (this.of(1.0) * unit).unit()
+
+operator fun <U: Unit, P: Unit> U.div(unit: P): Unit =
+    (this.of(1.0) / unit).unit()
+
+infix fun <U: Unit, P: Unit> U.per(unit: P): Unit = this / unit
+
 fun <U: Unit> Number.square(unit: U): Measure<*> = unit.of(this.toDouble()) * unit.of(1.0)
 fun <U: Unit> square(unit: U): Unit = (unit.of(1.0) * unit.of(1.0)).unit()
+
+@Suppress("UNCHECKED_CAST")
+val <U: Unit> U.squared: MultUnit<U, U> get() = square(this) as MultUnit<U, U>
+
+// more specific utility functions
+
+operator fun Distance.div(unit: TimeUnit): LinearVelocity = this / unit.of(1.0)
+
+operator fun DistanceUnit.div(unit: TimeUnit): LinearVelocityUnit =
+    LinearVelocityUnit.combine(this, unit)
+
+infix fun Distance.per(unit: TimeUnit): LinearVelocity = this / unit.of(1.0)
+
+infix fun DistanceUnit.per(unit: TimeUnit): LinearVelocityUnit =
+    LinearVelocityUnit.combine(this, unit)
+
+operator fun Distance.div(unit: MultUnit<TimeUnit, TimeUnit>): LinearAcceleration = (this.unit() / unit).of(this.magnitude())
+
+operator fun DistanceUnit.div(unit: MultUnit<TimeUnit, TimeUnit>): LinearAccelerationUnit =
+    LinearAccelerationUnit.combine(LinearVelocityUnit.combine(this, unit.unitA()), unit.unitB())
+
+infix fun Distance.per(unit: MultUnit<TimeUnit, TimeUnit>): LinearAcceleration = (this.unit() / unit).of(this.magnitude())
+
+infix fun DistanceUnit.per(unit: MultUnit<TimeUnit, TimeUnit>): LinearAccelerationUnit =
+    LinearAccelerationUnit.combine(LinearVelocityUnit.combine(this, unit.unitA()), unit.unitB())
+
+operator fun LinearVelocity.div(unit: TimeUnit): LinearAcceleration = this / unit.of(1.0)
+
+operator fun LinearVelocityUnit.div(unit: TimeUnit): LinearAccelerationUnit =
+    LinearAccelerationUnit.combine(this, unit)
+
+infix fun LinearVelocity.per(unit: TimeUnit): LinearAcceleration = this.div(unit.of(1.0))
+
+infix fun LinearVelocityUnit.per(unit: TimeUnit): LinearAccelerationUnit =
+    LinearAccelerationUnit.combine(this, unit)

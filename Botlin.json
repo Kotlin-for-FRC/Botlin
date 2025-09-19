@@ -5,7 +5,8 @@
     "frcYear": "2025",
     "uuid": "be9dba85-3c58-45e6-b376-070f1102e122",
     "mavenUrls": [
-        "~/.m2/repository"
+        "~/.m2/repository",
+        "https://repo1.maven.org/maven2/"
     ],
     "jsonUrl": "",
     "javaDependencies": [

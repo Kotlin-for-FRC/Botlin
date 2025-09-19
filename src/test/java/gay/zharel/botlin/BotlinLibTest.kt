@@ -19,6 +19,8 @@ class BotlinLibTest {
 
         println(123.Watt * Minutes)
 
+        println(12.nano.Meters / Prefixes.NANO.Second)
+
     }
 
 }

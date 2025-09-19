@@ -19,6 +19,7 @@ val weight = 123.Kilograms
 val kV = 12.Volts/Meter
 val batteryPercentageLose = 1.Percent per Minute
 val consumption = 123.Watt * Minutes
+val temperateAccel = 1.Kelven per square(Seconds)
 ```
 
 And more to come!

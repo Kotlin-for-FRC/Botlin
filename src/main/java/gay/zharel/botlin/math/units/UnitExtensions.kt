@@ -197,11 +197,11 @@ operator fun <U: Unit, P: Unit> Measure<U>.times(unit: P): Measure<*> = this * u
 operator fun <U: Unit, P: Unit> Measure<U>.div(unit: P): Measure<*> = this / unit.of(1.0)
 infix fun <U: Unit, P: Unit> Measure<U>.per(unit: P): Measure<*> = this / unit.of(1.0)
 
-operator fun <U: Unit, P: Unit> U.times(unit: P): Unit =
-    (this.of(1.0) * unit).unit()
+operator fun <U: Unit, P: Unit> U.times(unit: P): MultUnit<U, P> =
+    MultUnit.combine(this, unit)
 
-operator fun <U: Unit, P: Unit> U.div(unit: P): Unit =
-    (this.of(1.0) / unit).unit()
+operator fun <U: Unit, P: Unit> U.div(unit: P): PerUnit<U, P> =
+    PerUnit.combine(this, unit)
 
 infix fun <U: Unit, P: Unit> U.per(unit: P): Unit = this / unit
 

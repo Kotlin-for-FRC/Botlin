@@ -11,7 +11,7 @@
     "javaDependencies": [
         {
             "groupId": "gay.zharel.botlin",
-            "artifactId": "botlin",
+            "artifactId": "botlin-java",
             "version": "2025.0.0"
         }
     ],

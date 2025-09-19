@@ -21,6 +21,9 @@ class BotlinLibTest {
 
         println(12.nano.Meters / Prefixes.NANO.Second)
 
+        println(2.square(Meters))
+        println(2.Volts per square(Meter))
+
     }
 
 }

@@ -191,3 +191,6 @@ fun AngularVelocity.toLinearVelocity(radius: Distance): LinearVelocity =
 operator fun <U: Unit, P: Unit> Measure<U>.times(unit: P): Measure<*> = this * unit.of(1.0)
 operator fun <U: Unit, P: Unit> Measure<U>.div(unit: P): Measure<*> = this / unit.of(1.0)
 infix fun <U: Unit, P: Unit> Measure<U>.per(unit: P): Measure<*> = this / unit.of(1.0)
+
+fun <U: Unit> Number.square(unit: U): Measure<*> = unit.of(this.toDouble()) * unit.of(1.0)
+fun <U: Unit> square(unit: U): Unit = (unit.of(1.0) * unit.of(1.0)).unit()

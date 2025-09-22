@@ -4,9 +4,9 @@ import edu.wpi.first.units.BaseUnits
 import edu.wpi.first.units.DistanceUnit
 import edu.wpi.first.units.LinearAccelerationUnit
 import edu.wpi.first.units.LinearVelocityUnit
-import edu.wpi.first.units.Units
-import edu.wpi.first.units.Units.*
+import edu.wpi.first.units.*
 import edu.wpi.first.units.Unit
+import edu.wpi.first.units.Units.*
 import edu.wpi.first.units.Measure
 import edu.wpi.first.units.MultUnit
 import edu.wpi.first.units.PerUnit
@@ -19,179 +19,179 @@ import edu.wpi.first.units.measure.*
  */
 
 // DIMENSIONLESS
-inline val Dimensionless.Unit
+inline val Dimensionless.unit
     get() = this.to(BaseUnits.Value)
-inline val Dimensionless.Percent
-    get() = this.to(Units.Percent)
+inline val Dimensionless.percent
+    get() = this.to(Percent)
 
 // LENGTH
-inline val Distance.Meters
-    get() = this.to(Units.Meters)
-inline val Distance.Millimeters
-    get() = this.to(Units.Millimeters)
-inline val Distance.Centimeters
-    get() = this.to(Units.Centimeters)
-inline val Distance.Inches
-    get() = this.to(Units.Inches)
-inline val Distance.Feet
-    get() = this.to(Units.Feet)
+inline val Distance.meters
+    get() = this.to(Meters)
+inline val Distance.millimeters
+    get() = this.to(Millimeters)
+inline val Distance.centimeters
+    get() = this.to(Centimeters)
+inline val Distance.inches
+    get() = this.to(Inches)
+inline val Distance.feet
+    get() = this.to(Feet)
 
 // TIME
-inline val Time.Seconds
-    get() = this.to(Units.Seconds)
-inline val Time.Milliseconds
-    get() = this.to(Units.Milliseconds)
-inline val Time.Microseconds
-    get() = this.to(Units.Microseconds)
-inline val Time.Minutes
-    get() = this.to(Units.Minutes)
+inline val Time.seconds
+    get() = this.to(Seconds)
+inline val Time.milliseconds
+    get() = this.to(Milliseconds)
+inline val Time.microseconds
+    get() = this.to(Microseconds)
+inline val Time.minutes
+    get() = this.to(Minutes)
 
 // ANGLE
-inline val Angle.Radians
-    get() = this.to(Units.Radians)
-inline val Angle.Revolutions
-    get() = this.to(Units.Revolutions)
-inline val Angle.Rotations
-    get() = this.to(Units.Rotations)
-inline val Angle.Degrees
-    get() = this.to(Units.Degrees)
+inline val Angle.radians
+    get() = this.to(Radians)
+inline val Angle.revolutions
+    get() = this.to(Revolutions)
+inline val Angle.rotations
+    get() = this.to(Rotations)
+inline val Angle.degrees
+    get() = this.to(Degrees)
 
 // LINEAR VELOCITY
-inline val LinearVelocity.MetersPerSecond
-    get() = this.to(Units.MetersPerSecond)
-inline val LinearVelocity.FeetPerSecond
-    get() = this.to(Units.FeetPerSecond)
-inline val LinearVelocity.InchesPerSecond
-    get() = this.to(Units.InchesPerSecond)
+inline val LinearVelocity.metersPerSecond
+    get() = this.to(MetersPerSecond)
+inline val LinearVelocity.feetPerSecond
+    get() = this.to(FeetPerSecond)
+inline val LinearVelocity.inchesPerSecond
+    get() = this.to(InchesPerSecond)
 
 // ANGULAR VELOCITY
-inline val AngularVelocity.RevolutionsPerSecond
-    get() = this.to(Units.RevolutionsPerSecond)
-inline val AngularVelocity.RotationsPerSecond
-    get() = this.to(Units.RotationsPerSecond)
-inline val AngularVelocity.RPM
-    get() = this.to(Units.RPM)
-inline val AngularVelocity.RadiansPerSecond
-    get() = this.to(Units.RadiansPerSecond)
-inline val AngularVelocity.DegreesPerSecond
-    get() = this.to(Units.DegreesPerSecond)
+inline val AngularVelocity.revolutionsPerSecond
+    get() = this.to(RevolutionsPerSecond)
+inline val AngularVelocity.rotationsPerSecond
+    get() = this.to(RotationsPerSecond)
+inline val AngularVelocity.rpm
+    get() = this.to(RPM)
+inline val AngularVelocity.radiansPerSecond
+    get() = this.to(RadiansPerSecond)
+inline val AngularVelocity.degreesPerSecond
+    get() = this.to(DegreesPerSecond)
 
 // FREQUENCY
-inline val Frequency.Hertz
-    get() = this.to(Units.Hertz)
-inline val Frequency.Millihertz
-    get() = this.to(Units.Millihertz)
+inline val Frequency.hertz
+    get() = this.to(Hertz)
+inline val Frequency.millihertz
+    get() = this.to(Millihertz)
 
 // LINEAR ACCELERATION
-inline val LinearAcceleration.MetersPerSecondPerSecond
-    get() = this.to(Units.MetersPerSecondPerSecond)
-inline val LinearAcceleration.FeetPerSecondPerSecond
-    get() = this.to(Units.FeetPerSecondPerSecond)
-inline val LinearAcceleration.InchesPerSecondPerSecond
-    get() = this.to(Units.InchesPerSecondPerSecond)
+inline val LinearAcceleration.metersPerSecondPerSecond
+    get() = this.to(MetersPerSecondPerSecond)
+inline val LinearAcceleration.feetPerSecondPerSecond
+    get() = this.to(FeetPerSecondPerSecond)
+inline val LinearAcceleration.inchesPerSecondPerSecond
+    get() = this.to(InchesPerSecondPerSecond)
 inline val LinearAcceleration.Gs
     get() = this.to(Units.Gs)
 
 // ANGULAR ACCELERATION
-inline val AngularAcceleration.RotationsPerSecondPerSecond
-    get() = this.to(Units.RotationsPerSecondPerSecond)
-inline val AngularAcceleration.RadiansPerSecondPerSecond
-    get() = this.to(Units.RadiansPerSecondPerSecond)
-inline val AngularAcceleration.DegreesPerSecondPerSecond
-    get() = this.to(Units.DegreesPerSecondPerSecond)
+inline val AngularAcceleration.rotationsPerSecondPerSecond
+    get() = this.to(RotationsPerSecondPerSecond)
+inline val AngularAcceleration.radiansPerSecondPerSecond
+    get() = this.to(RadiansPerSecondPerSecond)
+inline val AngularAcceleration.degreesPerSecondPerSecond
+    get() = this.to(DegreesPerSecondPerSecond)
 
 // MASS
-inline val Mass.Kilograms
-    get() = this.to(Units.Kilograms)
-inline val Mass.Grams
-    get() = this.to(Units.Grams)
-inline val Mass.Pounds
-    get() = this.to(Units.Pounds)
-inline val Mass.Ounces
-    get() = this.to(Units.Ounces)
+inline val Mass.kilograms
+    get() = this.to(Kilograms)
+inline val Mass.grams
+    get() = this.to(Grams)
+inline val Mass.pounds
+    get() = this.to(Pounds)
+inline val Mass.ounces
+    get() = this.to(Ounces)
 
 // FORCE
-inline val Force.Newtons
-    get() = this.to(Units.Newtons)
-inline val Force.PoundsForce
-    get() = this.to(Units.PoundsForce)
-inline val Force.OuncesForce
-    get() = this.to(Units.OuncesForce)
+inline val Force.newtons
+    get() = this.to(Newtons)
+inline val Force.poundsForce
+    get() = this.to(PoundsForce)
+inline val Force.ouncesForce
+    get() = this.to(OuncesForce)
 
 // TORQUE
-inline val Torque.NewtonMeters
-    get() = this.to(Units.NewtonMeters)
-inline val Torque.PoundFeet
-    get() = this.to(Units.PoundFeet)
-inline val Torque.PoundInches
-    get() = this.to(Units.PoundInches)
-inline val Torque.OunceInches
-    get() = this.to(Units.OunceInches)
+inline val Torque.newtonMeters
+    get() = this.to(NewtonMeters)
+inline val Torque.poundFeet
+    get() = this.to(PoundFeet)
+inline val Torque.poundInches
+    get() = this.to(PoundInches)
+inline val Torque.ounceInches
+    get() = this.to(OunceInches)
 
 // LINEAR MOMENTUM
-inline val LinearMomentum.KilogramMetersPerSecond
-    get() = this.to(Units.KilogramMetersPerSecond)
+inline val LinearMomentum.kilogramMetersPerSecond
+    get() = this.to(KilogramMetersPerSecond)
 
 // ANGULAR MOMENTUM
-inline val AngularMomentum.KilogramMetersSquaredPerSecond
-    get() = this.to(Units.KilogramMetersSquaredPerSecond)
+inline val AngularMomentum.kilogramMetersSquaredPerSecond
+    get() = this.to(KilogramMetersSquaredPerSecond)
 
 // MOMENT OF INERTIA
-inline val MomentOfInertia.KilogramSquareMeters
-    get() = this.to(Units.KilogramSquareMeters)
+inline val MomentOfInertia.kilogramSquareMeters
+    get() = this.to(KilogramSquareMeters)
 
 // VOLTAGE
-inline val Voltage.Volts
-    get() = this.to(Units.Volts)
-inline val Voltage.Millivolts
-    get() = this.to(Units.Millivolts)
+inline val Voltage.volts
+    get() = this.to(Volts)
+inline val Voltage.millivolts
+    get() = this.to(Millivolts)
 
 // CURRENT
-inline val Current.Amps
-    get() = this.to(Units.Amps)
-inline val Current.Milliamps
-    get() = this.to(Units.Milliamps)
+inline val Current.amps
+    get() = this.to(Amps)
+inline val Current.milliamps
+    get() = this.to(Milliamps)
 
 // RESISTANCE
-inline val Resistance.Ohms
-    get() = this.to(Units.Ohms)
-inline val Resistance.KiloOhms
-    get() = this.to(Units.KiloOhms)
-inline val Resistance.MilliOhms
-    get() = this.to(Units.MilliOhm)
+inline val Resistance.ohms
+    get() = this.to(Ohms)
+inline val Resistance.kiloOhms
+    get() = this.to(KiloOhms)
+inline val Resistance.milliOhms
+    get() = this.to(MilliOhm)
 
 // ENERGY
-inline val Energy.Joules
-    get() = this.to(Units.Joules)
-inline val Energy.Kilojoules
-    get() = this.to(Units.Kilojoules)
-inline val Energy.Millijoules
-    get() = this.to(Units.Millijoules)
+inline val Energy.joules
+    get() = this.to(Joules)
+inline val Energy.kilojoules
+    get() = this.to(Kilojoules)
+inline val Energy.millijoules
+    get() = this.to(Millijoules)
 
 // POWER
-inline val Power.Watts
-    get() = this.to(Units.Watts)
-inline val Power.Milliwatts
-    get() = this.to(Units.Milliwatts)
-inline val Power.Horsepower
-    get() = this.to(Units.Horsepower)
+inline val Power.watts
+    get() = this.to(Watts)
+inline val Power.milliwatts
+    get() = this.to(Milliwatts)
+inline val Power.horsepower
+    get() = this.to(Horsepower)
 
 // TEMPERATURE
-inline val Temperature.Kelvin
-    get() = this.to(Units.Kelvin)
-inline val Temperature.Celsius
-    get() = this.to(Units.Celsius)
-inline val Temperature.Fahrenheit
-    get() = this.to(Units.Fahrenheit)
+inline val Temperature.kelvin
+    get() = this.to(Kelvin)
+inline val Temperature.celsius
+    get() = this.to(Celsius)
+inline val Temperature.fahrenheit
+    get() = this.to(Fahrenheit)
 
 // UTILITY FUNCTIONS
-fun Angle.toDistance(radius: Distance): Distance = radius * this.Radians
+fun Angle.toDistance(radius: Distance): Distance = radius * this.radians
 fun Distance.toAngle(radius: Distance): Angle = Radians.of((this / radius).magnitude())
 
 fun LinearVelocity.toAngularVelocity(radius: Distance): AngularVelocity =
-    RadiansPerSecond.of(this.MetersPerSecond / radius.Meters)
+    RadiansPerSecond.of(this.metersPerSecond / radius.meters)
 fun AngularVelocity.toLinearVelocity(radius: Distance): LinearVelocity =
-    MetersPerSecond.of(this.RadiansPerSecond * radius.Meters)
+    MetersPerSecond.of(this.radiansPerSecond * radius.meters)
 
 operator fun <U: Unit, P: Unit> Measure<U>.times(unit: P): Measure<*> = this * unit.of(1.0)
 operator fun <U: Unit, P: Unit> Measure<U>.div(unit: P): Measure<*> = this / unit.of(1.0)

@@ -62,7 +62,7 @@ deployer {
     }
 
     localSpec("local") {
-        release.version = "$version-local"
+        release.version = "$version"
     }
 
     centralPortalSpec("centralPortal") {

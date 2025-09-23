@@ -5,14 +5,13 @@
     "frcYear": "2025",
     "uuid": "be9dba85-3c58-45e6-b376-070f1102e122",
     "mavenUrls": [
-        "~/.m2/repository",
         "https://repo1.maven.org/maven2/"
     ],
     "jsonUrl": "",
     "javaDependencies": [
         {
             "groupId": "gay.zharel.botlin",
-            "artifactId": "botlin",
+            "artifactId": "botlin-java",
             "version": "2025.0.0"
         }
     ],

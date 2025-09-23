@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package gay.zharel.botlin.math.units
 
 import edu.wpi.first.units.*
@@ -6,8 +8,8 @@ import edu.wpi.first.units.Units.*
 import edu.wpi.first.units.measure.*
 
 /*
- * MAJOR SOURCE: Team 78 Air Strike
- * https://github.com/frc78/78-Kotlin-Template/blob/main/src/main/java/frc/robot/lib/Units.kt
+ * ORIGINAL SOURCE: Team 78 Air Strike
+ * https://github.com/frc78/78-Kotlin-Template/blob/main/src/main/java/frc/robot/lib/kt
  */
 
 // ANY UNIT
@@ -114,7 +116,6 @@ inline val Number.hertz: Frequency
 
 inline val Number.millihertz: Frequency
     get() = Millihertz.of(this.toDouble())
-
 
 // LINEAR ACCELERATION
 inline val Number.metersPerSecondPerSecond: LinearAcceleration

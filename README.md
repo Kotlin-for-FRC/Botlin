@@ -3,6 +3,27 @@ Simple syntax sugar and enhancements for Kotlin users of WPIlib
 
 Online installation coming soon, for now follow the local build instructions
 
+## Features
+Easy-to-use trigger operations
+```kt
+val a = Trigger { /*...*/ }
+val b = Trigger { /*...*/ }
+val c = a and b
+val d = !a or b
+val e = c xnor d
+```
+
+Advanced unit literals
+```kt
+val weight = 123.kilograms
+val kV = 12.volts/meter
+val batteryPercentageLose = 1.percent per minute
+val consumption = 123.watt * minutes
+val temperateAccel = 1.kelven per seconds.squared
+```
+
+And more to come!
+
 ## Building locally
 If you want to contribute to the project, you need to build it locally. 
 

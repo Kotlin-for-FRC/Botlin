@@ -1,3 +1,5 @@
+@file:Suppress("unused", "SpellCheckingInspection")
+
 package gay.zharel.botlin.math.units
 
 /*

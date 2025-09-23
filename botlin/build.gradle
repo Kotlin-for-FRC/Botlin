@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'java'
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
@@ -25,6 +27,32 @@ dependencies {
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+var javaVersion = "17"
+def kotlinJvmTarget = JvmTarget.fromTarget(javaVersion.toString())
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(kotlinJvmTarget)
+        jvmToolchain(Integer.valueOf(javaVersion.toString()))
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
+    targetCompatibility = JavaVersion.toVersion(javaVersion)
+
+    withSourcesJar()
+    withJavadocJar()
+}
+
+
+// Setup Javadocs to link back to WPILib docs
+javadoc {
+    options {
+        links "https://docs.oracle.com/en/java/javase/$javaVersion/docs/api/", 'https://github.wpilib.org/allwpilib/docs/release/java/'
+    }
 }
 
 test {

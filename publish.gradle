@@ -52,16 +52,6 @@ def artifactGroupId = 'gay.zharel.botlin'
 def baseArtifactId = 'botlin'
 def javaBaseName = "_GROUP_gay_zharel_botlin_ID_${baseArtifactId}-java_CLS"
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    archiveClassifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
 task outputJar(type: Jar, dependsOn: classes) {
     archiveBaseName = javaBaseName
     destinationDirectory = outputsFolder

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
     id 'org.jetbrains.kotlin.jvm'
@@ -27,7 +29,20 @@ test {
     }
 }
 
+var javaVersion = "17"
+def kotlinJvmTarget = JvmTarget.fromTarget(javaVersion.toString())
+
+kotlin {
+    compilerOptions {
+        jvmTarget.set(kotlinJvmTarget)
+        jvmToolchain(Integer.valueOf(javaVersion.toString()))
+    }
+}
+
 java {
+    sourceCompatibility = JavaVersion.toVersion(javaVersion)
+    targetCompatibility = JavaVersion.toVersion(javaVersion)
+
     withSourcesJar()
     withJavadocJar()
 }

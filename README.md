@@ -15,11 +15,11 @@ val e = c xnor d
 
 Advanced unit literals
 ```kt
-val weight = 123.Kilograms
-val kV = 12.Volts/Meter
-val batteryPercentageLose = 1.Percent per Minute
-val consumption = 123.Watt * Minutes
-val temperateAccel = 1.Kelven per square(Seconds)
+val weight = 123.kilograms
+val kV = 12.volts/meter
+val batteryPercentageLose = 1.percent per minute
+val consumption = 123.watt * minutes
+val temperateAccel = 1.kelven per seconds.squared
 ```
 
 And more to come!

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package gay.zharel.botlin.triggers
 
 import java.util.function.BooleanSupplier

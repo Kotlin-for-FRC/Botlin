@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package gay.zharel.botlin.math.units
 
 import edu.wpi.first.units.BaseUnits
@@ -183,6 +185,138 @@ inline val Temperature.celsius
     get() = this.to(Celsius)
 inline val Temperature.fahrenheit
     get() = this.to(Fahrenheit)
+
+// ALIASES
+val percent: DimensionlessUnit = Percent
+
+val meters: DistanceUnit = Meters
+val meter: DistanceUnit = Meter
+val millimeters: DistanceUnit = Millimeters
+val millimeter: DistanceUnit = Millimeter
+val mm: DistanceUnit = Millimeters
+val centimeters: DistanceUnit = Centimeters
+val centimeter: DistanceUnit = Centimeter
+val cm: DistanceUnit = Centimeters
+val inches: DistanceUnit = Inches
+val inch: DistanceUnit = Inch
+val feet: DistanceUnit = Feet
+val foot: DistanceUnit = Foot
+
+val seconds: TimeUnit = Seconds
+val second: TimeUnit = Second
+val milliseconds: TimeUnit = Milliseconds
+val millisecond: TimeUnit = Millisecond
+val microseconds: TimeUnit = Microseconds
+val microsecond: TimeUnit = Microsecond
+val minutes: TimeUnit = Minutes
+val minute: TimeUnit = Minute
+
+val radians: AngleUnit = Radians
+val radian: AngleUnit = Radian
+val revolutions: AngleUnit = Revolutions
+val revolution: AngleUnit = Revolution
+val rotations: AngleUnit = Rotations
+val rotation: AngleUnit = Rotation
+val degrees: AngleUnit = Degrees
+val degree: AngleUnit = Degree
+
+val metersPerSecond: LinearVelocityUnit = MetersPerSecond
+val mps: LinearVelocityUnit = MetersPerSecond
+val feetPerSecond: LinearVelocityUnit = FeetPerSecond
+val inchesPerSecond: LinearVelocityUnit = InchesPerSecond
+
+val revolutionsPerSecond: AngularVelocityUnit = RevolutionsPerSecond
+val rotationsPerSecond: AngularVelocityUnit = RotationsPerSecond
+val rps: AngularVelocityUnit = RotationsPerSecond
+val rpm: AngularVelocityUnit = RPM
+val radiansPerSecond: AngularVelocityUnit = RadiansPerSecond
+val degreesPerSecond: AngularVelocityUnit = DegreesPerSecond
+
+val hertz: FrequencyUnit = Hertz
+val millihertz: FrequencyUnit = Millihertz
+
+val metersPerSecondPerSecond: LinearAccelerationUnit = MetersPerSecondPerSecond
+val mpsSquared: LinearAccelerationUnit = MetersPerSecondPerSecond
+val feetPerSecondPerSecond: LinearAccelerationUnit = FeetPerSecondPerSecond
+val inchesPerSecondPerSecond: LinearAccelerationUnit = InchesPerSecondPerSecond
+
+val rotationsPerSecondPerSecond: AngularAccelerationUnit = RotationsPerSecondPerSecond
+val rpsSquared: AngularAccelerationUnit = RotationsPerSecondPerSecond
+val radiansPerSecondPerSecond: AngularAccelerationUnit = RadiansPerSecondPerSecond
+val degreesPerSecondPerSecond: AngularAccelerationUnit = DegreesPerSecondPerSecond
+
+val kilograms: MassUnit = Kilograms
+val kilogram: MassUnit = Kilogram
+val grams: MassUnit = Grams
+val gram: MassUnit = Gram
+val pounds: MassUnit = Pounds
+val pound: MassUnit = Pound
+val ounces: MassUnit = Ounces
+val ounce: MassUnit = Ounce
+
+val newtons: ForceUnit = Newtons
+val newton: ForceUnit = Newton
+val poundsForce: ForceUnit = PoundsForce
+val poundForce: ForceUnit = PoundForce
+val ouncesForce: ForceUnit = OuncesForce
+val ounceForce: ForceUnit = OunceForce
+
+val newtonMeters: TorqueUnit = NewtonMeters
+val newtonMeter: TorqueUnit = NewtonMeter
+val poundFeet: TorqueUnit = PoundFeet
+val poundFoot: TorqueUnit = PoundFoot
+val poundInches: TorqueUnit = PoundInches
+val poundInch: TorqueUnit = PoundInch
+val ounceInches: TorqueUnit = OunceInches
+val ounceInch: TorqueUnit = OunceInch
+
+val kilogramMetersPerSecond: LinearMomentumUnit = KilogramMetersPerSecond
+val kgMpS: LinearMomentumUnit = KilogramMetersPerSecond
+
+val kilogramMetersSquaredPerSecond: AngularMomentumUnit = KilogramMetersSquaredPerSecond
+val kgM2pS: AngularMomentumUnit = KilogramMetersSquaredPerSecond
+
+val kilogramSquareMeters: MomentOfInertiaUnit = KilogramSquareMeters
+val kgM2: MomentOfInertiaUnit = KilogramSquareMeters
+
+val volts: VoltageUnit = Volts
+val volt: VoltageUnit = Volt
+val millivolts: VoltageUnit = Millivolts
+val millivolt: VoltageUnit = Millivolt
+
+val amps: CurrentUnit = Amps
+val amp: CurrentUnit = Amp
+val milliamps: CurrentUnit = Milliamps
+val milliamp: CurrentUnit = Milliamp
+
+val ohms: ResistanceUnit = Ohms
+val ohm: ResistanceUnit = Ohm
+val kiloOhms: ResistanceUnit = KiloOhms
+val kiloOhm: ResistanceUnit= KiloOhm
+val milliOhms: ResistanceUnit = MilliOhms
+val milliOhm: ResistanceUnit = MilliOhm
+
+val joules: EnergyUnit = Joules
+val joule: EnergyUnit = Joule
+val kilojoules: EnergyUnit = Kilojoules
+val kilojoule: EnergyUnit = Kilojoule
+val millijoules: EnergyUnit = Millijoules
+val millijoule: EnergyUnit = Millijoule
+
+val watts: PowerUnit = Watts
+val watt: PowerUnit = Watt
+val milliwatts: PowerUnit = Milliwatts
+val milliwatt: PowerUnit = Milliwatt
+val horsepower: PowerUnit = Horsepower
+
+val kelvin: TemperatureUnit = Kelvin
+val celsius: TemperatureUnit = Celsius
+val fahrenheit: TemperatureUnit = Fahrenheit
+
+val voltsPerMeterPerSecond: PerUnit<VoltageUnit, LinearVelocityUnit> = VoltsPerMeterPerSecond
+val voltsPerMeterPerSecondSquared: PerUnit<VoltageUnit, LinearAccelerationUnit> = VoltsPerMeterPerSecondSquared
+val voltsPerRadianPerSecond: PerUnit<VoltageUnit, AngularVelocityUnit> = VoltsPerRadianPerSecond
+val voltsPerRadianPerSecondSquare: PerUnit<VoltageUnit, LinearAccelerationUnit> = VoltsPerMeterPerSecondSquared
 
 // UTILITY FUNCTIONS
 fun Angle.toDistance(radius: Distance): Distance = radius * this.radians

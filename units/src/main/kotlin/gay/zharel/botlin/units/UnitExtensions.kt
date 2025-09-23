@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package gay.zharel.botlin.math.units
+package gay.zharel.botlin.units
 
 import edu.wpi.first.units.*
 import edu.wpi.first.units.Unit

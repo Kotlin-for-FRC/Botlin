@@ -1,0 +1,73 @@
+plugins {
+    id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'maven-publish'
+    id "io.deepmedia.tools.deployer"
+}
+
+if (project.hasProperty('releaseMode')) {
+    wpilibRepositories.addAllReleaseRepositories(project)
+} else {
+    wpilibRepositories.addAllDevelopmentRepositories(project)
+}
+
+dependencies {
+    api "edu.wpi.first.wpiunits:wpiunits-java:$wpilibVersion"
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+def artifactGroupId = 'gay.zharel.botlin'
+def baseArtifactId = 'units'
+
+deployer {
+    projectInfo {
+        groupId.set(artifactGroupId)
+        artifactId.set(baseArtifactId)
+        url.set("https://github.com/Kotlin-for-FRC/Botlin")
+
+        scm {
+            fromGithub("Kotlin-for-FRC", "Botlin")
+        }
+
+        license("BSD-3-Clause", "https://opensource.org/license/bsd-3-clause")
+
+        developer("Zachary Harel", "ftc@zharel.me", null, "https://github.com/zachwaffle4")
+    }
+
+    signing {
+        key.set(secret("MVN_GPG_KEY"))
+        password.set(secret("MVN_GPG_PASSWORD"))
+    }
+
+    content {
+        component {
+            fromJava()
+        }
+    }
+
+    localSpec("local") {
+        release.version = "$version-local"
+    }
+
+    centralPortalSpec("centralPortal") {
+        release.version = "$version"
+        auth.user.set(secret("SONATYPE_USERNAME"))
+        auth.password.set(secret("SONATYPE_PASSWORD"))
+    }
+}

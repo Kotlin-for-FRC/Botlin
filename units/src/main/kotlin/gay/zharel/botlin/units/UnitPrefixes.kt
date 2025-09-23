@@ -1,6 +1,6 @@
 @file:Suppress("unused", "SpellCheckingInspection")
 
-package gay.zharel.botlin.math.units
+package gay.zharel.botlin.units
 
 /*
  * ORIGINAL SOURCE: https://github.com/battery-staple/KMeasure/blob/master/src/commonMain/kotlin/units/SIPrefixes.kt

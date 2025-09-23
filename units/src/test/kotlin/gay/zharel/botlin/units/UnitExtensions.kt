@@ -1,12 +1,10 @@
-package gay.zharel.botlin
+package gay.zharel.botlin.units
 
 import edu.wpi.first.units.Units.*
-import gay.zharel.botlin.math.units.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class UnitExtensions {
-
     @Test
     fun `test times, div, and per`() {
         val a = 5.newtons * meters

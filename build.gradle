@@ -1,97 +1,57 @@
-import edu.wpi.first.toolchain.*
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id 'cpp'
-    id 'java'
-    id 'google-test'
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
-    id 'edu.wpi.first.NativeUtils' version '2025.9.0'
-    id 'edu.wpi.first.GradleJni' version '1.1.0'
-    id 'edu.wpi.first.GradleVsCode' version '2.1.0'
-    id "org.jetbrains.kotlin.jvm" version "2.1.0"
-    id "idea"
-    id "io.deepmedia.tools.deployer" version "0.18.0"
+    id "org.jetbrains.kotlin.jvm" version "2.1.0" apply false
+    id "io.deepmedia.tools.deployer" version "0.18.0" apply false
 }
 
 // WPILib Version
 ext.wpilibVersion = "2025.+"
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    repositories {
+        mavenCentral()
+    }
 
-if (project.hasProperty('releaseMode')) {
-    wpilibRepositories.addAllReleaseRepositories(project)
-} else {
-    wpilibRepositories.addAllDevelopmentRepositories(project)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-var javaVersion = "17"
-def kotlinJvmTarget = JvmTarget.@Companion.fromTarget(javaVersion.toString())
-
-// Apply Java configuration
-dependencies {
-    implementation "edu.wpi.first.cscore:cscore-java:$wpilibVersion"
-    implementation "edu.wpi.first.cameraserver:cameraserver-java:$wpilibVersion"
-    implementation "edu.wpi.first.ntcore:ntcore-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpilibj:wpilibj-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpiutil:wpiutil-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpimath:wpimath-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpiunits:wpiunits-java:$wpilibVersion"
-    implementation "edu.wpi.first.wpilibNewCommands:wpilibNewCommands-java:$wpilibVersion"
-    implementation "edu.wpi.first.hal:hal-java:$wpilibVersion"
-    implementation "org.ejml:ejml-simple:0.43.1"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:2.15.2"
-    implementation "com.fasterxml.jackson.core:jackson-core:2.15.2"
-    implementation "com.fasterxml.jackson.core:jackson-databind:2.15.2"
-    implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-// Set up java tests
-test {
-    useJUnitPlatform()
-    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
-    testLogging {
-        events "failed"
-        exceptionFormat "full"
+    if (project.hasProperty('releaseMode')) {
+        wpilibRepositories.addAllReleaseRepositories(project)
+    } else {
+        wpilibRepositories.addAllDevelopmentRepositories(project)
     }
 }
 
-if (project.hasProperty('onlylinuxathena') || project.hasProperty('onlylinuxarm32') || project.hasProperty('onlylinuxarm64') || project.hasProperty('onlywindowsarm64') || project.hasProperty('onlylinuxsystemcore')) {
-    test.enabled = false
-}
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
 
-tasks.withType(JavaCompile) {
-    options.compilerArgs.add '-XDstringConcat=inline'
-    options.encoding = 'UTF-8'
-}
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 
-// Setup Javadocs to link back to WPILib docs
-javadoc {
-    options {
-        links "https://docs.oracle.com/en/java/javase/$javaVersion/docs/api/", 'https://github.wpilib.org/allwpilib/docs/release/java/'
+    var javaVersion = "17"
+    def kotlinJvmTarget = JvmTarget.fromTarget(javaVersion.toString())
+
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(kotlinJvmTarget)
+            jvmToolchain(Integer.valueOf(javaVersion.toString()))
+        }
+    }
+
+    tasks.withType(JavaCompile).configureEach {
+        options.compilerArgs.add '-XDstringConcat=inline'
+        options.encoding = 'UTF-8'
+    }
+
+    // Setup Javadocs to link back to WPILib docs
+    javadoc {
+        options {
+            links "https://docs.oracle.com/en/java/javase/$javaVersion/docs/api/", 'https://github.wpilib.org/allwpilib/docs/release/java/'
+        }
     }
 }
-
-// kotlin
-kotlin {
-    compilerOptions {
-        jvmTarget.set(kotlinJvmTarget)
-        // https://kotlinlang.org/docs/gradle-configure-project.html#gradle-java-toolchains-support
-        jvmToolchain(Integer.valueOf(javaVersion.toString()))
-    }
-}
-
-apply from: 'publish.gradle'
 
 wrapper {
     gradleVersion '8.11'

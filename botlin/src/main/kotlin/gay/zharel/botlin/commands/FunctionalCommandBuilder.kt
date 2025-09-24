@@ -1,15 +1,24 @@
 package gay.zharel.botlin.commands
 
-import edu.wpi.first.util.function.BooleanConsumer
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.FunctionalCommand
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.Subsystem
 import java.util.function.BooleanSupplier
 import java.util.function.Consumer
 import java.util.function.Supplier
 
-class FunctionalCommandBuilder: CommandBuilder {
+fun buildFunctionalCommand(init: FunctionalCommandBuilder.() -> Unit): Command {
+    val builder = FunctionalCommandBuilder()
+    builder.init()
+    return builder.asCommand()
+}
+fun buildFunctionalCommandSupplier(init: FunctionalCommandBuilder.() -> Unit): Supplier<Command> {
+    val builder = FunctionalCommandBuilder()
+    builder.init()
+    return builder.asCommandSupplier()
+}
+
+class FunctionalCommandBuilder {
 
     var requirements: Set<Subsystem> = setOf()
 
@@ -18,32 +27,32 @@ class FunctionalCommandBuilder: CommandBuilder {
     var endAction: Consumer<Boolean> = Consumer<Boolean> {}
     var finishedCondition: BooleanSupplier = BooleanSupplier { true }
 
-    infix fun requires(requirements: Set<Subsystem>): FunctionalCommandBuilder {
-        this.requirements = requirements
+    fun requires(vararg requirements: Subsystem): FunctionalCommandBuilder {
+        this.requirements = requirements.toSet()
         return this
     }
 
-    infix fun start(action: Runnable): FunctionalCommandBuilder {
+    fun start(action: Runnable): FunctionalCommandBuilder {
         startAction = action
         return this
     }
 
-    infix fun execute(action: Runnable): FunctionalCommandBuilder {
+    fun execute(action: Runnable): FunctionalCommandBuilder {
         executeAction = action
         return this
     }
 
-    infix fun end(action: Consumer<Boolean>): FunctionalCommandBuilder {
+    fun end(action: Consumer<Boolean>): FunctionalCommandBuilder {
         endAction = action
         return this
     }
 
-    infix fun isFinished(condition: BooleanSupplier): FunctionalCommandBuilder {
+    fun isFinished(condition: BooleanSupplier): FunctionalCommandBuilder {
         finishedCondition = condition
         return this
     }
 
-    override fun asCommand(): Command {
+    fun asCommand(): Command {
         return FunctionalCommand(
             startAction,
             executeAction,
@@ -53,7 +62,7 @@ class FunctionalCommandBuilder: CommandBuilder {
         )
     }
 
-    override fun asCommandSupplier(): Supplier<Command> {
+    fun asCommandSupplier(): Supplier<Command> {
         return Supplier<Command> {
             FunctionalCommand(
                 startAction,

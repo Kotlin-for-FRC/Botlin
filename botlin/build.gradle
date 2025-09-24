@@ -1,8 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    id 'java'
+    id 'java-library'
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
+    id 'edu.wpi.first.NativeUtils'
+    id 'edu.wpi.first.GradleJni'
+    id 'edu.wpi.first.GradleVsCode'
     id "org.jetbrains.kotlin.jvm"
     id 'maven-publish'
     id "io.deepmedia.tools.deployer"
@@ -48,7 +51,7 @@ java {
 }
 
 def artifactGroupId = 'gay.zharel.botlin'
-def baseArtifactId = 'units'
+def baseArtifactId = 'botlin'
 
 deployer {
     projectInfo {
@@ -86,7 +89,6 @@ deployer {
         auth.password.set(secret("SONATYPE_PASSWORD"))
     }
 }
-
 
 
 // Setup Javadocs to link back to WPILib docs

@@ -13,6 +13,11 @@ class SequentialCommandBuilder: CommandBuilder {
     var commands: List<Command> = listOf()
     var requirements: Set<Subsystem> = setOf()
 
+    infix fun requires(requirements: Set<Subsystem>): SequentialCommandBuilder {
+        this.requirements = requirements
+        return this
+    }
+
     infix fun runOnce(action: Runnable): SequentialCommandBuilder {
         commands += Commands.runOnce(action)
         return this
@@ -50,11 +55,6 @@ class SequentialCommandBuilder: CommandBuilder {
 
     infix fun waitUntil(condition: BooleanSupplier): SequentialCommandBuilder {
         commands += Commands.waitUntil(condition)
-        return this
-    }
-
-    infix fun requires(requirements: Set<Subsystem>): SequentialCommandBuilder {
-        this.requirements = requirements
         return this
     }
 

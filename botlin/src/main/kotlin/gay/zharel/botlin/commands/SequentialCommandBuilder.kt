@@ -17,6 +17,7 @@ fun buildSequentialCommand(initializer: SequentialCommandChain.() -> Unit): Sequ
     chain.initializer()
     return chain.asCommand()
 }
+
 class SequentialCommandBuilder(
     initializer: SequentialCommandChain.() -> Unit
 ): ReadOnlyProperty<Any?, SequentialCommandGroup> {
@@ -60,7 +61,15 @@ class SequentialCommandChain {
     }
 
     fun runWithTimeout(timeout: Time, vararg commandsToRun: Command) {
-        commands += Commands.deadline(Commands.waitTime(timeout), *commandsToRun)
+        commands += Commands.race(Commands.waitTime(timeout), *commandsToRun)
+    }
+
+    fun runUntil(condition: BooleanSupplier, vararg commandsToRun: Command) {
+        commands += Commands.race(Commands.waitUntil(condition), *commandsToRun)
+    }
+
+    fun runWhile(condition: BooleanSupplier, vararg commandsToRun: Command) {
+        commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, *commandsToRun)
     }
 
     fun thenPrint(message: String) {

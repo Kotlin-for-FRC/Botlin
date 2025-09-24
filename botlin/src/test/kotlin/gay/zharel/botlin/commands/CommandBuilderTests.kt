@@ -28,6 +28,12 @@ class CommandBuilderTests {
             for(i in 1..5) {
                 thenPrint("Hello, world ($i)")
             }
+
+            var x = 0
+            runUntil(
+                { x > 500 },
+                Commands.runOnce({ x++ })
+            )
         }
     }
 

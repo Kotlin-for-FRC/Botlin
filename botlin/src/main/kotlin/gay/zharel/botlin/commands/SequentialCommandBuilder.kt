@@ -6,10 +6,12 @@ import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.Subsystem
 import java.util.function.BooleanSupplier
+import java.util.function.Supplier
 
-class SequentialCommandBuilder {
+class SequentialCommandBuilder: CommandBuilder {
 
     var commands: List<Command> = listOf()
+    var requirements: Set<Subsystem> = setOf()
 
     infix fun runOnce(action: Runnable): SequentialCommandBuilder {
         commands += Commands.runOnce(action)
@@ -51,10 +53,23 @@ class SequentialCommandBuilder {
         return this
     }
 
-    infix fun requiring(requirements: Set<Subsystem>): SequentialCommandGroup {
+    infix fun requires(requirements: Set<Subsystem>): SequentialCommandBuilder {
+        this.requirements = requirements
+        return this
+    }
+
+    override fun asCommand(): Command {
         val group = SequentialCommandGroup(*commands.toTypedArray())
         group.addRequirements(*requirements.toTypedArray())
         return group
+    }
+
+    override fun asCommandSupplier(): Supplier<Command> {
+        return Supplier<Command> {
+            val group = SequentialCommandGroup(*commands.toTypedArray())
+            group.addRequirements(*requirements.toTypedArray())
+            group
+        }
     }
 
 }

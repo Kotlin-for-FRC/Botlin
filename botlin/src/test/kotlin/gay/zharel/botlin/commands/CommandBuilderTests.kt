@@ -2,6 +2,7 @@ package gay.zharel.botlin.commands
 
 import edu.wpi.first.wpilibj2.command.Commands
 import gay.zharel.botlin.units.milliseconds
+import gay.zharel.botlin.units.ms
 import org.junit.jupiter.api.Test
 
 class CommandBuilderTests {
@@ -30,10 +31,14 @@ class CommandBuilderTests {
             }
 
             var x = 0
-            runUntil(
-                { x > 500 },
-                Commands.runOnce({ x++ })
-            )
+            runUntil({ x > 500 }) {
+                run { x++ }
+            }
+
+            runWithTimeout(500.milliseconds) {
+                runOnce { x++ }
+                thenPrint("$x")
+            }
         }
     }
 

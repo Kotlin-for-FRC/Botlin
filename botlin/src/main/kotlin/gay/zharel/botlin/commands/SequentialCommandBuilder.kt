@@ -21,7 +21,7 @@ fun buildSequentialCommand(initializer: SequentialCommandChain.() -> Unit): Sequ
 class SequentialCommandBuilder(
     initializer: SequentialCommandChain.() -> Unit
 ): ReadOnlyProperty<Any?, SequentialCommandGroup> {
-    private var chain = SequentialCommandChain()
+    private val chain = SequentialCommandChain()
     init {
         chain.initializer()
     }
@@ -38,6 +38,10 @@ class SequentialCommandChain {
 
     fun requires(vararg requirements: Subsystem) {
         this.requirements = requirements.toSet()
+    }
+
+    fun run(action: Runnable) {
+        commands += Commands.run(action)
     }
 
     fun runOnce(action: Runnable) {
@@ -59,17 +63,37 @@ class SequentialCommandChain {
     fun runWithDeadline(deadline: Command, vararg otherCommands: Command) {
         commands += Commands.deadline(deadline, *otherCommands)
     }
+    fun runWithDeadline(deadline: Command, sequence: SequentialCommandChain.() -> Unit) {
+        val chain = SequentialCommandChain()
+        chain.sequence()
+        commands += Commands.deadline(deadline, chain.asCommand())
+    }
 
     fun runWithTimeout(timeout: Time, vararg commandsToRun: Command) {
         commands += Commands.race(Commands.waitTime(timeout), *commandsToRun)
+    }
+    fun runWithTimeout(timeout: Time, sequence: SequentialCommandChain.() -> Unit) {
+        val chain = SequentialCommandChain()
+        chain.sequence()
+        commands += Commands.race(Commands.waitTime(timeout), chain.asCommand())
     }
 
     fun runUntil(condition: BooleanSupplier, vararg commandsToRun: Command) {
         commands += Commands.race(Commands.waitUntil(condition), *commandsToRun)
     }
+    fun runUntil(condition: BooleanSupplier, sequence: SequentialCommandChain.() -> Unit) {
+        val chain = SequentialCommandChain()
+        chain.sequence()
+        commands += Commands.race(Commands.waitUntil(condition), chain.asCommand())
+    }
 
     fun runWhile(condition: BooleanSupplier, vararg commandsToRun: Command) {
         commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, *commandsToRun)
+    }
+    fun runWhile(condition: BooleanSupplier, sequence: SequentialCommandChain.() -> Unit) {
+        val chain = SequentialCommandChain()
+        chain.sequence()
+        commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, chain.asCommand())
     }
 
     fun thenPrint(message: String) {

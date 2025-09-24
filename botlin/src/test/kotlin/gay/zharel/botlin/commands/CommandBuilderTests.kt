@@ -58,4 +58,27 @@ class CommandBuilderTests {
         }
     }
 
+    @Test
+    fun `test CoroutineCommandBuilder + CoroutineCommand`() {
+
+        val myCORCommand by CoroutineCommandBuilder {
+            var x = 0
+            while(x < 500) {
+                x++
+                yield()
+            }
+            println("Hello, world!")
+        }
+
+        val myOtherCORCommand: CoroutineCommand = CoroutineCommand {
+            var x = 0
+            while(x < 500) {
+                x++
+                yield()
+            }
+            println("Hello, world pt 2!")
+        }
+
+    }
+
 }

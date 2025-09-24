@@ -15,15 +15,23 @@ class CommandBuilderTests {
             runOnce { println("hello, world") }
             runCommand(myTestCommand)
         }
-        val my2ndCommand = buildSequentialCommandSupplier {
+        val my2ndCommand by SequentialCommandBuilder {
             requires()
             runOnce { println("hello, world pt 2") }
             runCommand(myTestCommand)
             waitTime(500.milliseconds)
-            print("print command testing")
+            thenPrint("print command testing")
+        }
+        val my3rdCommand by SequentialCommandBuilder {
+            requires()
+
+            for(i in 1..5) {
+                thenPrint("Hello, world ($i)")
+            }
         }
     }
 
+    @Test
     fun `test FunctionalCommandBuilder syntax`() {
         val myCommand = buildFunctionalCommand {
             start { println("Starting") }
@@ -31,7 +39,7 @@ class CommandBuilderTests {
             end { interrupted -> println("Ended. Interrupted: $interrupted") }
             isFinished { true }
         }
-        val my2ndCommand = buildFunctionalCommandSupplier {
+        val my2ndCommand by FunctionalCommandBuilder {
             start { println("Starting") }
             execute { println("Executing") }
             end { interrupted -> println("Ended. Interrupted: $interrupted") }

@@ -9,76 +9,84 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.Subsystem
 import java.util.function.BooleanSupplier
 import java.util.function.Supplier
+import kotlin.properties.ReadOnlyProperty
+import kotlin.reflect.KProperty
 
-fun buildSequentialCommand(init: SequentialCommandBuilder.() -> Unit): Command {
-    val builder = SequentialCommandBuilder()
-    builder.init()
-    return builder.asCommand()
+fun buildSequentialCommand(initializer: SequentialCommandChain.() -> Unit): SequentialCommandGroup {
+    val chain = SequentialCommandChain()
+    chain.initializer()
+    return chain.asCommand()
 }
-fun buildSequentialCommandSupplier(init: SequentialCommandBuilder.() -> Unit): Supplier<Command> {
-    val builder = SequentialCommandBuilder()
-    builder.init()
-    return builder.asCommandSupplier()
+class SequentialCommandBuilder(
+    initializer: SequentialCommandChain.() -> Unit
+): ReadOnlyProperty<Any?, SequentialCommandGroup> {
+    private var chain = SequentialCommandChain()
+    init {
+        chain.initializer()
+    }
+
+    override fun getValue(thisRef: Any?, property: KProperty<*>): SequentialCommandGroup {
+        return chain.asCommand()
+    }
 }
 
-class SequentialCommandBuilder {
+class SequentialCommandChain {
 
     var commands: List<Command> = listOf()
     var requirements: Set<Subsystem> = setOf()
 
-    fun requires(vararg requirements: Subsystem): SequentialCommandBuilder {
+    fun requires(vararg requirements: Subsystem) {
         this.requirements = requirements.toSet()
-        return this
     }
 
-    fun runOnce(action: Runnable): SequentialCommandBuilder {
+    fun runOnce(action: Runnable) {
         commands += Commands.runOnce(action)
-        return this
     }
 
-    fun runCommand(command: Command): SequentialCommandBuilder {
+    fun runCommand(command: Command) {
         commands += command
-        return this
     }
 
-    fun runParallel(commandSet: Set<Command>): SequentialCommandBuilder {
-        commands += Commands.parallel(*commandSet.toTypedArray())
-        return this
+    fun runParallel(vararg commandsToRun: Command) {
+        commands += Commands.parallel(*commandsToRun)
     }
 
-    fun runRace(commandSet: Set<Command>): SequentialCommandBuilder {
-        commands += Commands.race(*commandSet.toTypedArray())
-        return this
+    fun runRace(vararg commandsToRun: Command) {
+        commands += Commands.race(*commandsToRun)
     }
 
-    fun print(message: String): SequentialCommandBuilder {
+    fun runWithDeadline(deadline: Command, vararg otherCommands: Command) {
+        commands += Commands.deadline(deadline, *otherCommands)
+    }
+
+    fun runWithTimeout(timeout: Time, vararg commandsToRun: Command) {
+        commands += Commands.deadline(Commands.waitTime(timeout), *commandsToRun)
+    }
+
+    fun thenPrint(message: String) {
         commands += Commands.print(message)
-        return this
     }
 
-    fun waitSeconds(seconds: Double): SequentialCommandBuilder {
+    fun waitSeconds(seconds: Double) {
         commands += Commands.waitSeconds(seconds)
-        return this
     }
 
-    fun waitTime(time: Time): SequentialCommandBuilder {
+    fun waitTime(time: Time) {
         commands += Commands.waitTime(time)
-        return this
     }
 
-    fun waitUntil(condition: BooleanSupplier): SequentialCommandBuilder {
+    fun waitUntil(condition: BooleanSupplier) {
         commands += Commands.waitUntil(condition)
-        return this
     }
 
-    fun asCommand(): Command {
+    fun asCommand(): SequentialCommandGroup {
         val group = SequentialCommandGroup(*commands.toTypedArray())
         group.addRequirements(*requirements.toTypedArray())
         return group
     }
 
-    fun asCommandSupplier(): Supplier<Command> {
-        return Supplier<Command> {
+    fun asCommandSupplier(): Supplier<SequentialCommandGroup> {
+        return Supplier<SequentialCommandGroup> {
             val group = SequentialCommandGroup(*commands.toTypedArray())
             group.addRequirements(*requirements.toTypedArray())
             group

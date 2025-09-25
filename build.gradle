@@ -2,7 +2,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
-    id "org.jetbrains.kotlin.jvm" version "2.1.0" apply false
+    id 'edu.wpi.first.NativeUtils' version '2025.9.0' apply false
+    id 'edu.wpi.first.GradleJni' version '1.1.0' apply false
+    id 'edu.wpi.first.GradleVsCode' version '2.1.0' apply false
+    id "org.jetbrains.kotlin.jvm" version "2.2.20" apply false
     id "io.deepmedia.tools.deployer" version "0.18.0" apply false
 }
 

@@ -2,14 +2,14 @@ package gay.zharel.botlin.commands
 
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Subsystem
-import edu.wpi.first.wpilibj2.command.SubsystemBase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.yield
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.createCoroutine
+import kotlin.coroutines.resume
 
 /**
  * A command that wraps a Kotlin coroutine for use in the command-based framework.
@@ -84,33 +84,5 @@ fun createCoroutineCommand(
     block: suspend () -> Unit
 ): CoroutineCommand {
     return CoroutineCommand(block, requirements, interruptible)
-}
-
-class FakeMotor() {
-    val currentPosition: Double = 0.0
-    val currentVelocity: Double = 0.0
-
-    fun setVoltage(voltage: Double) {}
-}
-
-class FakePIDController() {
-    var setpoint: Double = 0.0
-
-    fun calculate(currentPosition: Double): Double = 0.0
-    fun atTolerance(currentPosition: Double, tolerance: Double) = false
-}
-
-object MySubsystem : SubsystemBase() {
-    val motor = FakeMotor()
-    val pid = FakePIDController()
-
-    fun goToTarget(position: Double) = createCoroutineCommand {
-        pid.setpoint = position
-        while (!pid.atTolerance(motor.currentPosition, 10.0)) {
-            motor.setVoltage(pid.calculate(motor.currentPosition))
-            yield()
-        }
-        motor.setVoltage(0.0)
-    }
 }
 

@@ -103,12 +103,12 @@ deployer {
 model {
     components {
         JniLibraryHoneypot(NativeExecutableSpec) {
-           sources.cpp {
-               source {
-                   srcDir 'src/main/native/cpp'
-                   include '**/*.cpp'
-               }
-           }
+            sources.cpp {
+                source {
+                    srcDir 'src/main/native/cpp'
+                    include '**/*.cpp'
+                }
+            }
             nativeUtils.useRequiredLibrary(it, 'wpilib_shared')
         }
     }

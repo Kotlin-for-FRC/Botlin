@@ -41,29 +41,24 @@ class FunctionalCommandChain {
     var endAction: Consumer<Boolean> = Consumer<Boolean> {}
     var finishedCondition: BooleanSupplier = BooleanSupplier { true }
 
-    fun requires(vararg requirements: Subsystem): FunctionalCommandChain {
+    fun requires(vararg requirements: Subsystem) {
         this.requirements = requirements.toSet()
-        return this
     }
 
-    fun start(action: Runnable): FunctionalCommandChain {
+    fun start(action: Runnable) {
         startAction = action
-        return this
     }
 
-    fun execute(action: Runnable): FunctionalCommandChain {
+    fun execute(action: Runnable) {
         executeAction = action
-        return this
     }
 
-    fun end(action: Consumer<Boolean>): FunctionalCommandChain {
+    fun end(action: Consumer<Boolean>) {
         endAction = action
-        return this
     }
 
-    fun isFinished(condition: BooleanSupplier): FunctionalCommandChain {
+    fun isFinished(condition: BooleanSupplier) {
         finishedCondition = condition
-        return this
     }
 
     fun asCommand(): FunctionalCommand {

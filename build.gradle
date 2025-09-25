@@ -1,5 +1,14 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+buildscript {
+    ext.kotlin_version = '2.2.0'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
 plugins {
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin' version '2025.0'
     id 'edu.wpi.first.NativeUtils' version '2025.9.0' apply false
@@ -8,6 +17,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "2.2.20" apply false
     id "io.deepmedia.tools.deployer" version "0.18.0" apply false
 }
+apply plugin: 'kotlin'
 
 // WPILib Version
 ext.wpilibVersion = "2025.+"
@@ -36,4 +46,13 @@ subprojects {
 
 wrapper {
     gradleVersion '8.11'
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+}
+kotlin {
+    jvmToolchain(8)
 }

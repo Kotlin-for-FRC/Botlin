@@ -1,8 +1,10 @@
 package gay.zharel.botlin.commands
 
+import edu.wpi.first.units.Units.*
+import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Commands
-import gay.zharel.botlin.units.milliseconds
-import gay.zharel.botlin.units.ms
+import gay.zharel.botlin.units.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class CommandBuilderTests {
@@ -61,23 +63,26 @@ class CommandBuilderTests {
     @Test
     fun `test CoroutineCommandBuilder + CoroutineCommand`() {
 
-        val myCORCommand by CoroutineCommandBuilder {
+        println("test beginning")
+
+        val myCORCommand = CoroutineCommand(runsWhileDisabled = true) {
             var x = 0
-            while(x < 500) {
+            while(x < 10) {
                 x++
-                yield()
+                println(x)
+                wait(1.second)
             }
             println("Hello, world!")
         }
 
-        val myOtherCORCommand: CoroutineCommand = CoroutineCommand {
-            var x = 0
-            while(x < 500) {
-                x++
-                yield()
-            }
-            println("Hello, world pt 2!")
+        CommandScheduler.getInstance().schedule(myCORCommand)
+        println("command scheduled")
+
+        while(CommandScheduler.getInstance().isScheduled(myCORCommand)) {
+            CommandScheduler.getInstance().run()
         }
+
+        println("test ended")
 
     }
 

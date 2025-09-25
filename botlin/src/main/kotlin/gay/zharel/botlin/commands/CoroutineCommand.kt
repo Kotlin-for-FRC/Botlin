@@ -2,7 +2,13 @@
 
 package gay.zharel.botlin.commands
 
+import edu.wpi.first.units.measure.Time
+import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.Subsystem
+import gay.zharel.botlin.commands.CoroutineCommandIterator
+import gay.zharel.botlin.units.seconds
+import java.util.function.BooleanSupplier
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -10,19 +16,30 @@ import kotlin.coroutines.intrinsics.*
 import kotlin.coroutines.resume
 
 class CoroutineCommand(
+    requirements: Set<Subsystem> = setOf(),
+    private val runsWhileDisabled: Boolean = false,
     private val block: suspend CoroutineCommandIteratorScope.() -> Unit
 ): Command() {
 
     private var coroutine: CoroutineCommandIterator = CoroutineCommandIterator()
 
+    init {
+        println("CoroutineCommand created")
+        addRequirements(*requirements.toTypedArray())
+    }
+
     override fun initialize() {
+        println("CoroutineCommand initialized")
         // create continuation and start executing
+        coroutine = CoroutineCommandIterator()
         coroutine.nextStep = block.createCoroutineUnintercepted(coroutine, coroutine)
     }
 
     override fun execute() = coroutine.iterate()
 
     override fun isFinished(): Boolean = coroutine.finished
+
+    override fun runsWhenDisabled(): Boolean = runsWhileDisabled
 }
 
 private enum class CoroutineState {
@@ -32,11 +49,26 @@ private enum class CoroutineState {
     FAILED
 }
 
-interface CoroutineCommandIteratorScope {
-    suspend fun yield()
+abstract class CoroutineCommandIteratorScope {
+    abstract suspend fun yield()
+
+    suspend fun waitUntil(condition: BooleanSupplier) {
+        while(!condition.asBoolean) {
+            yield()
+        }
+    }
+
+    suspend fun wait(time: Time) {
+        val timer = Timer()
+        val duration = time.seconds
+        timer.start()
+        while(!timer.hasElapsed(duration)) {
+            yield()
+        }
+    }
 }
 
-private class CoroutineCommandIterator: CoroutineCommandIteratorScope, Continuation<Unit> {
+private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continuation<Unit> {
 
     private var state = CoroutineState.NOT_READY
     var nextStep: Continuation<Unit>? = null

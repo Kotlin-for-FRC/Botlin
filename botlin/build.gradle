@@ -37,6 +37,7 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:2.15.2"
     implementation "com.fasterxml.jackson.core:jackson-databind:2.15.2"
     implementation 'edu.wpi.first.thirdparty.frc2025.opencv:opencv-java:4.10.0-2'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2"
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

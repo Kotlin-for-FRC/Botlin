@@ -13,6 +13,11 @@
             "groupId": "gay.zharel.botlin",
             "artifactId": "botlin-java",
             "version": "2025.0.0"
+        },
+        {
+            "groupId": "org.jetbrains.kotlinx",
+            "artifactId": "kotlinx-coroutines-core",
+            "version": "1.10.2"
         }
     ],
     "jniDependencies": [],

@@ -65,20 +65,33 @@ class CommandBuilderTests {
 
         println("test beginning")
 
-        val myCORCommand = CoroutineCommand(runsWhileDisabled = true) {
+        val myCORCommand by CoroutineCommandBuilder(runsWhileDisabled = true) {
             var x = 0
             while(x < 10) {
                 x++
-                println(x)
+                println("myCORCommand: $x")
                 wait(1.second)
             }
             println("Hello, world!")
         }
 
-        CommandScheduler.getInstance().schedule(myCORCommand)
+        val my2ndCORCommand = CoroutineCommand(runsWhileDisabled = true) {
+            var x = 0
+            while(x < 10) {
+                x++
+                println("my2ndCORCommand: $x")
+                if(x == 5) {
+                    await { myCORCommand }
+                }
+                wait(1.second)
+            }
+            println("Hello, world!")
+        }
+
+        CommandScheduler.getInstance().schedule(my2ndCORCommand)
         println("command scheduled")
 
-        while(CommandScheduler.getInstance().isScheduled(myCORCommand)) {
+        while(CommandScheduler.getInstance().isScheduled(my2ndCORCommand)) {
             CommandScheduler.getInstance().run()
         }
 

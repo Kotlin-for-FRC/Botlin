@@ -5,10 +5,12 @@ package gay.zharel.botlin.commands
 import edu.wpi.first.units.measure.Time
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.Command
+import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Subsystem
 import gay.zharel.botlin.commands.CoroutineCommandIterator
 import gay.zharel.botlin.units.seconds
 import java.util.function.BooleanSupplier
+import java.util.function.Supplier
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
@@ -24,12 +26,10 @@ class CoroutineCommand(
     private var coroutine: CoroutineCommandIterator = CoroutineCommandIterator()
 
     init {
-        println("CoroutineCommand created")
         addRequirements(*requirements.toTypedArray())
     }
 
     override fun initialize() {
-        println("CoroutineCommand initialized")
         // create continuation and start executing
         coroutine = CoroutineCommandIterator()
         coroutine.nextStep = block.createCoroutineUnintercepted(coroutine, coroutine)
@@ -63,6 +63,14 @@ abstract class CoroutineCommandIteratorScope {
         val duration = time.seconds
         timer.start()
         while(!timer.hasElapsed(duration)) {
+            yield()
+        }
+    }
+
+    suspend fun await(command: Supplier<Command>) {
+        val cmd = command.get()
+        CommandScheduler.getInstance().schedule(cmd)
+        while(!cmd.isFinished) {
             yield()
         }
     }

@@ -4,10 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.Subsystem
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class LabelCommand(private val label: String) : InstantCommand() {
+class LabelCommand(private val label: String) : InstantCommand({ println("Running command: $label") }) {
     init {
         this.name = label
     }
@@ -26,7 +27,7 @@ val sequence = buildSequence {
     until { someCondition() }
 }
 
-val built = buildCommand {
+val built = buildFunctionalCommand {
     withStart { println("Hello, World!") }
     withExecute { println("Hello, World!") }
     withEnd { println("Goodbye, World!") }
@@ -47,17 +48,14 @@ val sequence2 = buildSequence {
     }
 }
 
-class BuilderExampleTest {
-    val scheduler get() = CommandScheduler.getInstance()
-
-    @AfterEach
-    fun afterEach() {
-        scheduler.cancelAll()
-    }
-
+class BuilderExampleTest : CommandTestBase() {
     @Test
     fun `test sequence builder`() {
-        scheduler.schedule(sequence)
+        scheduler.schedule(sequence2)
+        assertTrue(scheduler.isScheduled(sequence2))
+        while (sequence2.isScheduled) {
+            scheduler.run()
+        }
     }
 }
 

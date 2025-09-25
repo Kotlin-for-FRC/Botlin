@@ -2,6 +2,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id 'java-library'
+    id 'cpp'
+    id 'google-test'
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
     id 'edu.wpi.first.NativeUtils'
     id 'edu.wpi.first.GradleJni'
@@ -10,6 +12,8 @@ plugins {
     id 'maven-publish'
     id "io.deepmedia.tools.deployer"
 }
+
+apply from: '../config.gradle'
 
 dependencies {
     api project(':units')
@@ -90,6 +94,69 @@ deployer {
     }
 }
 
+//nativeUtils.addWpiNativeUtils()
+//
+//ext.getCurrentArch = {
+//    def osName = System.getProperty("os.name").toLowerCase()
+//    def osArch = System.getProperty("os.arch").toLowerCase()
+//
+//    if (osName.contains("windows")) {
+//        return osArch.contains("64") ? "windowsx86-64" : "windowsx86"
+//    } else if (osName.contains("mac")) {
+//        return osArch.contains("aarch64") ? "osxarm64" : "osxx86-64"
+//    } else {
+//        return osArch.contains("64") ? "linuxx86-64" : "linuxx86"
+//    }
+//}
+//
+//def systemArch = getCurrentArch()
+//
+//nativeUtils {
+//    wpi {
+//        configureDependencies {
+//            wpiVersion = "2025.0.0"
+//        }
+//    }
+//}
+
+//model {
+//    testSuites {
+//        BotlinTest(GoogleTestSuiteSpec) {
+//            sources.cpp {
+//                source {
+//                    srcDir 'src/test/native/cpp'
+//                    include '**/*.cpp'
+//                }
+//            }
+//
+//            nativeUtils.useRequiredLibrary(it, "wpilib_executable_shared", "googletest_static")
+//
+//            binaries.all {
+//                def arch = it.targetPlatform.name
+//                if (systemArch == arch && it.buildType.name == 'debug') {
+//                    def filePath = it.tasks.install.installDirectory.get().toString() + File.separatorChar + 'lib'
+//                    test.dependsOn it.tasks.install
+//                    test.systemProperty 'java.library.path', filePath
+//                    test.environment 'LD_LIBRARY_PATH', filePath
+//                    test.workingDir filePath
+//                }
+//            }
+//        }
+//    }
+//}
+
+model {
+    components {
+        all {
+            nativeUtils.useAllPlatforms(it)
+        }
+    }
+    binaries {
+        withType(NativeBinarySpec).all {
+            nativeUtils.usePlatformArguments(it)
+        }
+    }
+}
 
 // Setup Javadocs to link back to WPILib docs
 javadoc {

@@ -70,7 +70,7 @@ class CommandBuilderTests {
             while(x < 10) {
                 x++
                 println("myCORCommand: $x")
-                wait(1.second)
+                wait(0.5.seconds)
             }
             println("Hello, world!")
         }
@@ -83,7 +83,7 @@ class CommandBuilderTests {
                 if(x == 5) {
                     await { myCORCommand }
                 }
-                wait(1.second)
+                wait(0.5.seconds)
             }
             println("Hello, world!")
         }

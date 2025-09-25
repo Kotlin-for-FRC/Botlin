@@ -101,17 +101,17 @@ deployer {
 }
 
 model {
-//    components {
-//        JniLibraryHoneypot(NativeExecutableSpec) {
-//            sources.cpp {
-//                source {
-//                    srcDir 'src/main/native/cpp'
-//                    include '**/*.cpp'
-//                }
-//            }
-//            nativeUtils.useRequiredLibrary(it, 'wpilib_shared')
-//        }
-//    }
+    components {
+        JniLibraryHoneypot(NativeExecutableSpec) {
+            sources.cpp {
+                source {
+                    srcDir 'src/main/native/cpp'
+                    include '**/*.cpp'
+                }
+            }
+            nativeUtils.useRequiredLibrary(it, 'wpilib_shared')
+        }
+    }
     tasks {
         def c = $.components
         def found = false

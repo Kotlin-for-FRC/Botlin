@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package gay.zharel.botlin.commands
 
 import edu.wpi.first.wpilibj2.command.Command

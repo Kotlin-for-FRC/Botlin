@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.FunctionalCommand
 import edu.wpi.first.wpilibj2.command.Subsystem
 
-infix fun Command.named(name: String): Command = this.withName(name)
-
 class FunctionalCommandBuilder(
     internal var start: () -> Unit = {},
     internal var execute: () -> Unit = {},

@@ -1,11 +1,8 @@
 package gay.zharel.botlin.commands
 
-import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.InstantCommand
 import edu.wpi.first.wpilibj2.command.Subsystem
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class LabelCommand(private val label: String) : InstantCommand({ println("Running command: $label") }) {
@@ -28,10 +25,10 @@ val sequence = buildSequence {
 }
 
 val built = buildFunctionalCommand {
-    withStart { println("Hello, World!") }
-    withExecute { println("Hello, World!") }
-    withEnd { println("Goodbye, World!") }
-    withIsFinished(::someCondition)
+    start { println("Hello, World!") }
+    execute { println("Hello, World!") }
+    end { println("Goodbye, World!") }
+    isFinished(::someCondition)
     requiring(A, B)
 }
 
@@ -40,10 +37,10 @@ val sequence2 = buildSequence {
     run(LabelCommand("Second"))
     until { someCondition() }
     buildCommand {
-        withStart { println("Hello, World!") }
-        withExecute { println("Hello, World!") }
-        withEnd { println("Goodbye, World!") }
-        withIsFinished(::someCondition)
+        start { println("Hello, World!") }
+        execute { println("Hello, World!") }
+        end { println("Goodbye, World!") }
+        isFinished(::someCondition)
         requiring(A, B)
     }
 }

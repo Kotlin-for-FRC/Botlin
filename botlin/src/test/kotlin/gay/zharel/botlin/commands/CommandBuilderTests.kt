@@ -119,4 +119,9 @@ class CommandBuilderTests {
 
     }
 
+    @Test
+    fun `test bound triggers`() {
+        
+    }
+
 }

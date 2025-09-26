@@ -4,9 +4,11 @@ package gay.zharel.botlin.commands
 
 import edu.wpi.first.units.measure.Time
 import edu.wpi.first.wpilibj.Timer
+import edu.wpi.first.wpilibj.event.EventLoop
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Subsystem
+import edu.wpi.first.wpilibj2.command.button.Trigger
 import gay.zharel.botlin.units.seconds
 import java.util.function.BooleanSupplier
 import java.util.function.Supplier
@@ -50,7 +52,9 @@ class CoroutineCommand(
     /**
      * (INTERNAL) Command execution function
      */
-    override fun execute() = coroutine.iterate()
+    override fun execute() {
+        coroutine.iterate()
+    }
 
     /**
      * (INTERNAL) Command finishing condition
@@ -80,6 +84,15 @@ private enum class CoroutineState {
  * while allowing other internal iterator functions to remain hidden.
  */
 abstract class CoroutineCommandIteratorScope {
+
+    /**
+     * Creates a new trigger based on the given condition.
+     *
+     * Polled by the default local event loop
+     *
+     * @param condition The condition represented by this trigger
+     */
+    abstract fun Trigger(condition: BooleanSupplier): Trigger
 
     /**
      * Yield execution back to the command scheduler.
@@ -148,10 +161,15 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
     private var state = CoroutineState.NOT_READY
     var nextStep: Continuation<Unit>? = null
 
+    var localEventLoop: EventLoop = EventLoop()
+
     /**
      * (INTERNAL) perform one iteration
      */
     fun iterate() {
+        // poll local event loop
+        localEventLoop.poll()
+
         // until iterator ready
         while(true) {
             when(state) {
@@ -183,6 +201,13 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
                 step.resume(Unit)
             }
         }
+    }
+
+    /**
+     * (INTERNAL) Bounded trigger creation
+     */
+    override fun Trigger(condition: BooleanSupplier): Trigger {
+        return Trigger(localEventLoop, condition)
     }
 
     /**

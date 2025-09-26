@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import java.util.function.BooleanSupplier
 
 class ScopedTrigger(
-    val loop: EventLoop = CommandScheduler.getInstance().defaultButtonLoop,
+    val loop: EventLoop,
     val scope: BooleanSupplier = BooleanSupplier { true },
     val condition: BooleanSupplier
 ): BooleanSupplier {
@@ -40,9 +40,8 @@ class ScopedTrigger(
             previous, current, previousScope, currentScope ->
             if(previous != current && currentScope) {
                 CommandScheduler.getInstance().schedule(command)
-            }
-            if(previousScope && !currentScope) {
-                CommandScheduler.getInstance().cancel(command)
+            } else if(previousScope && !currentScope) {
+                command.cancel()
             }
         }
         return this
@@ -53,9 +52,8 @@ class ScopedTrigger(
             previous, current, previousScope, currentScope ->
             if(!previous && current && currentScope) {
                 CommandScheduler.getInstance().schedule(command)
-            }
-            if(previousScope && !currentScope) {
-                CommandScheduler.getInstance().cancel(command)
+            } else if(previousScope && !currentScope) {
+                command.cancel()
             }
         }
         return this
@@ -66,14 +64,97 @@ class ScopedTrigger(
             previous, current, previousScope, currentScope ->
             if(previous && !current && currentScope) {
                 CommandScheduler.getInstance().schedule(command)
+            } else if(previousScope && !currentScope) {
+                command.cancel()
             }
-            if(previousScope && !currentScope) {
-                CommandScheduler.getInstance().cancel(command)
+        }
+        return this
+    }
+
+    fun whileTrue(command: Command): ScopedTrigger {
+        addBinding {
+                previous, current, previousScope, currentScope ->
+            if(!previous && current && currentScope) {
+                CommandScheduler.getInstance().schedule(command)
+            }
+            if(previousScope && !currentScope || previous && !current) {
+                command.cancel()
+            }
+        }
+        return this
+    }
+
+    fun whileFalse(command: Command): ScopedTrigger {
+        addBinding {
+                previous, current, previousScope, currentScope ->
+            if(previous && !current && currentScope) {
+                CommandScheduler.getInstance().schedule(command)
+            }
+            if(previousScope && !currentScope || !previous && current) {
+                command.cancel()
+            }
+        }
+        return this
+    }
+
+    fun toggleOnTrue(command: Command): ScopedTrigger {
+        addBinding {
+            previous, current, previousScope, currentScope ->
+            if (!previous && current && currentScope) {
+                if (command.isScheduled) {
+                    command.cancel()
+                } else {
+                    CommandScheduler.getInstance().schedule(command)
+                }
+            } else if(previousScope && !currentScope) {
+                command.cancel()
+            }
+        }
+        return this
+    }
+
+    fun toggleOnFalse(command: Command): ScopedTrigger {
+        addBinding {
+                previous, current, previousScope, currentScope ->
+            if (previous && !current && currentScope) {
+                if (command.isScheduled) {
+                    command.cancel()
+                } else {
+                    CommandScheduler.getInstance().schedule(command)
+                }
+            } else if(previousScope && !currentScope) {
+                command.cancel()
             }
         }
         return this
     }
 
     override fun getAsBoolean(): Boolean = condition.asBoolean && scope.asBoolean
+
+    infix fun and(trigger: ScopedTrigger) = ScopedTrigger(
+        loop,
+        {scope.asBoolean && trigger.scope.asBoolean},
+        {condition.asBoolean && trigger.condition.asBoolean}
+    )
+    infix fun and(trigger: BooleanSupplier) = ScopedTrigger(
+        loop,
+        scope,
+        {condition.asBoolean && trigger.asBoolean}
+    )
+
+    infix fun or(trigger: ScopedTrigger) = ScopedTrigger(
+        loop,
+        {scope.asBoolean && trigger.scope.asBoolean},
+        {condition.asBoolean && trigger.condition.asBoolean}
+    )
+    infix fun or(trigger: BooleanSupplier) = ScopedTrigger(
+        loop,
+        scope,
+        {condition.asBoolean && trigger.asBoolean}
+    )
+
+    operator fun not(): ScopedTrigger = ScopedTrigger(loop, scope, { !condition.asBoolean })
+
+    fun negate(): ScopedTrigger = !this
 
 }

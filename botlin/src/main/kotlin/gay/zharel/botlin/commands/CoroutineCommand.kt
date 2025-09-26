@@ -17,10 +17,25 @@ import kotlin.coroutines.intrinsics.*
 import kotlin.coroutines.resume
 
 /**
+ * Create a new [CoroutineCommand] delegate
+ *
+ * @param requirements (optional) The command subsystem requirements
+ * @param runsWhileDisabled (optional) A flag to run the command while the robot is disabled
+ * @param block The code block used for execution
+ */
+fun coroutineCommandDelegate(
+    requirements: Set<Subsystem> = setOf(),
+    runsWhileDisabled: Boolean = false,
+    block: suspend CoroutineCommandIteratorScope.() -> Unit
+): CommandDelegate {
+    return CommandDelegate { CoroutineCommand(requirements, runsWhileDisabled, block) }
+}
+
+/**
  * A command that executes in a coroutine-styled fashion.
  * It executes until reaching a `yield()`.
  *
- * To create a delegated CoroutineCommand, use [CoroutineCommandBuilder].
+ * To create a delegated CoroutineCommand, use [coroutineCommandDelegate].
  *
  * @param requirements (optional) The command subsystem requirements
  * @param runsWhileDisabled (optional) A flag to run the command while the robot is disabled

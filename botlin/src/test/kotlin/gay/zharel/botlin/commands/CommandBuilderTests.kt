@@ -1,10 +1,9 @@
 package gay.zharel.botlin.commands
 
-import edu.wpi.first.units.Units.*
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Commands
 import gay.zharel.botlin.units.*
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 class CommandBuilderTests {
@@ -96,6 +95,27 @@ class CommandBuilderTests {
         }
 
         println("test ended")
+
+    }
+
+    @Test
+    fun `test command scheduler`() {
+
+        CommandScheduler.getInstance().cancelAll()
+        CommandScheduler.getInstance().enable()
+
+        val myCommand = CoroutineCommand(runsWhileDisabled = true) {
+            yield()
+            yield()
+            yield()
+            println("test")
+        }
+
+        CommandScheduler.getInstance().schedule(myCommand)
+
+        CommandScheduler.getInstance().run()
+
+        assertTrue(CommandScheduler.getInstance().isScheduled(myCommand))
 
     }
 

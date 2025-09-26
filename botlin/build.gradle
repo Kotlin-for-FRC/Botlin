@@ -1,12 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import edu.wpi.first.toolchain.*
 
 plugins {
-    id 'java'
+    id 'java-library'
+    id 'cpp'
     id 'edu.wpi.first.wpilib.repositories.WPILibRepositoriesPlugin'
+    id 'edu.wpi.first.NativeUtils'
+    id 'edu.wpi.first.GradleJni'
+    id 'edu.wpi.first.GradleVsCode'
     id "org.jetbrains.kotlin.jvm"
     id 'maven-publish'
     id "io.deepmedia.tools.deployer"
 }
+
+ext.getCurrentArch = {
+    return NativePlatforms.desktop
+}
+
+def systemArch = getCurrentArch()
+
+apply from: '../config.gradle'
 
 dependencies {
     api project(':units')
@@ -87,7 +100,40 @@ deployer {
     }
 }
 
+model {
+    components {
+        JniLibraryHoneypot(NativeExecutableSpec) {
+            sources.cpp {
+                source {
+                    srcDir 'src/main/native/cpp'
+                    include '**/*.cpp'
+                }
+            }
+            nativeUtils.useRequiredLibrary(it, 'wpilib_shared')
+        }
+    }
+    tasks {
+        def c = $.components
+        def found = false
+        c.each {
+            if (it in NativeExecutableSpec && it.name == "JniLibraryHoneypot") {
+                it.binaries.each {
+                    if (!found) {
+                        def arch = it.targetPlatform.name
+                        if (arch == systemArch) {
+                            def filePath = it.tasks.install.installDirectory.get().toString() + File.separatorChar + 'lib'
+                            test.dependsOn it.tasks.install
 
+                            test.systemProperty 'java.library.path', filePath
+
+                            found = true
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 
 // Setup Javadocs to link back to WPILib docs
 javadoc {

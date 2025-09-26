@@ -1,15 +1,20 @@
 package gay.zharel.botlin.commands
 
+import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.Subsystem
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.yield
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.createCoroutine
 import kotlin.coroutines.resume
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * A command that wraps a Kotlin coroutine for use in the command-based framework.
@@ -20,12 +25,11 @@ class CoroutineCommand(
     requirements: List<Subsystem> = emptyList(),
     private val interruptible: Boolean = true
 ) : Command() {
-    private val scope = CoroutineScope(Dispatchers.Main + Job())
-    private lateinit var job: Job
+    private lateinit var continuation: Continuation<Unit>
     private var isFinished = false
 
     val completion = object : Continuation<Unit> {
-        override val context: CoroutineContext = scope.coroutineContext
+        override val context: CoroutineContext = Dispatchers.Main
 
         override fun resumeWith(result: Result<Unit>) {
             result.onSuccess {
@@ -53,16 +57,12 @@ class CoroutineCommand(
     override fun initialize() {
         isFinished = false
 
-        val continuation = action.createCoroutine(completion)
-        job = scope.launch {
-            continuation.resume(Unit)
-        }
+        continuation = action.createCoroutine(completion)
+        continuation.resume(Unit)
     }
 
     override fun execute() {
-        // The coroutine execution is handled by the continuation
-        // This method is called every scheduler run, but the actual
-        // coroutine progression happens through yields
+        continuation.resume(Unit)
     }
 
     override fun isFinished(): Boolean {
@@ -70,7 +70,6 @@ class CoroutineCommand(
     }
 
     override fun end(interrupted: Boolean) {
-        job.cancel()
         isFinished = true
     }
 }
@@ -86,3 +85,10 @@ fun createCoroutineCommand(
     return CoroutineCommand(block, requirements, interruptible)
 }
 
+val example = createCoroutineCommand {
+    val timer = Timer()
+    while (timer.get().seconds < 5.0.seconds) {
+        println("timer running")
+        yield()
+    }
+}

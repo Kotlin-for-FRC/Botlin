@@ -12,16 +12,16 @@ import java.util.function.Supplier
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-fun buildSequentialCommand(initializer: SequentialCommandChain.() -> Unit): SequentialCommandGroup {
-    val chain = SequentialCommandChain()
+fun buildSequentialCommand(initializer: SequentialCommandBuilderScope.() -> Unit): SequentialCommandGroup {
+    val chain = SequentialCommandBuilderScope()
     chain.initializer()
     return chain.asCommand()
 }
 
 class SequentialCommandBuilder(
-    initializer: SequentialCommandChain.() -> Unit
+    initializer: SequentialCommandBuilderScope.() -> Unit
 ): ReadOnlyProperty<Any?, SequentialCommandGroup> {
-    private val chain = SequentialCommandChain()
+    private val chain = SequentialCommandBuilderScope()
     init {
         chain.initializer()
     }
@@ -31,7 +31,7 @@ class SequentialCommandBuilder(
     }
 }
 
-class SequentialCommandChain {
+class SequentialCommandBuilderScope {
 
     var commands: List<Command> = listOf()
     var requirements: Set<Subsystem> = setOf()
@@ -63,8 +63,8 @@ class SequentialCommandChain {
     fun runWithDeadline(deadline: Command, vararg otherCommands: Command) {
         commands += Commands.deadline(deadline, *otherCommands)
     }
-    fun runWithDeadline(deadline: Command, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
+    fun runWithDeadline(deadline: Command, sequence: SequentialCommandBuilderScope.() -> Unit) {
+        val chain = SequentialCommandBuilderScope()
         chain.sequence()
         commands += Commands.deadline(deadline, chain.asCommand())
     }
@@ -72,8 +72,8 @@ class SequentialCommandChain {
     fun runWithTimeout(timeout: Time, vararg commandsToRun: Command) {
         commands += Commands.race(Commands.waitTime(timeout), *commandsToRun)
     }
-    fun runWithTimeout(timeout: Time, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
+    fun runWithTimeout(timeout: Time, sequence: SequentialCommandBuilderScope.() -> Unit) {
+        val chain = SequentialCommandBuilderScope()
         chain.sequence()
         commands += Commands.race(Commands.waitTime(timeout), chain.asCommand())
     }
@@ -81,8 +81,8 @@ class SequentialCommandChain {
     fun runUntil(condition: BooleanSupplier, vararg commandsToRun: Command) {
         commands += Commands.race(Commands.waitUntil(condition), *commandsToRun)
     }
-    fun runUntil(condition: BooleanSupplier, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
+    fun runUntil(condition: BooleanSupplier, sequence: SequentialCommandBuilderScope.() -> Unit) {
+        val chain = SequentialCommandBuilderScope()
         chain.sequence()
         commands += Commands.race(Commands.waitUntil(condition), chain.asCommand())
     }
@@ -90,8 +90,8 @@ class SequentialCommandChain {
     fun runWhile(condition: BooleanSupplier, vararg commandsToRun: Command) {
         commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, *commandsToRun)
     }
-    fun runWhile(condition: BooleanSupplier, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
+    fun runWhile(condition: BooleanSupplier, sequence: SequentialCommandBuilderScope.() -> Unit) {
+        val chain = SequentialCommandBuilderScope()
         chain.sequence()
         commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, chain.asCommand())
     }

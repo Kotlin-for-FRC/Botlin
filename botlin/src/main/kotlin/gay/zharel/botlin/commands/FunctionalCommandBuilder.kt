@@ -11,17 +11,17 @@ import java.util.function.Supplier
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
-fun buildFunctionalCommand(initializer: FunctionalCommandChain.() -> Unit): Command {
-    val chain = FunctionalCommandChain()
+fun buildFunctionalCommand(initializer: FunctionalCommandBuilderScope.() -> Unit): Command {
+    val chain = FunctionalCommandBuilderScope()
     chain.initializer()
     return chain.asCommand()
 }
 
 class FunctionalCommandBuilder(
-    initializer: FunctionalCommandChain.() -> Unit
+    initializer: FunctionalCommandBuilderScope.() -> Unit
 ): ReadOnlyProperty<Any?, FunctionalCommand> {
 
-    private val chain = FunctionalCommandChain()
+    private val chain = FunctionalCommandBuilderScope()
     init {
         chain.initializer()
     }
@@ -32,7 +32,7 @@ class FunctionalCommandBuilder(
 
 }
 
-class FunctionalCommandChain {
+class FunctionalCommandBuilderScope {
 
     var requirements: Set<Subsystem> = setOf()
 
@@ -41,27 +41,27 @@ class FunctionalCommandChain {
     var endAction: Consumer<Boolean> = Consumer<Boolean> {}
     var finishedCondition: BooleanSupplier = BooleanSupplier { true }
 
-    fun requires(vararg requirements: Subsystem): FunctionalCommandChain {
+    fun requires(vararg requirements: Subsystem): FunctionalCommandBuilderScope {
         this.requirements = requirements.toSet()
         return this
     }
 
-    fun start(action: Runnable): FunctionalCommandChain {
+    fun start(action: Runnable): FunctionalCommandBuilderScope {
         startAction = action
         return this
     }
 
-    fun execute(action: Runnable): FunctionalCommandChain {
+    fun execute(action: Runnable): FunctionalCommandBuilderScope {
         executeAction = action
         return this
     }
 
-    fun end(action: Consumer<Boolean>): FunctionalCommandChain {
+    fun end(action: Consumer<Boolean>): FunctionalCommandBuilderScope {
         endAction = action
         return this
     }
 
-    fun isFinished(condition: BooleanSupplier): FunctionalCommandChain {
+    fun isFinished(condition: BooleanSupplier): FunctionalCommandBuilderScope {
         finishedCondition = condition
         return this
     }

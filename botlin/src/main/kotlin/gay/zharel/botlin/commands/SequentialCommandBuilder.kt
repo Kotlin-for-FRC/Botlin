@@ -8,44 +8,31 @@ import edu.wpi.first.wpilibj2.command.Commands
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup
 import edu.wpi.first.wpilibj2.command.Subsystem
 import java.util.function.BooleanSupplier
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 /**
  * Create a new [SequentialCommandGroup] using a builder.
  *
  * @param initializer The builder body
  */
-fun buildSequentialCommand(initializer: SequentialCommandChain.() -> Unit): SequentialCommandGroup {
-    val chain = SequentialCommandChain()
-    chain.initializer()
-    return chain.asCommand()
+fun buildSequentialCommand(initializer: SequentialCommandBuilder.() -> Unit): SequentialCommandGroup {
+    val builder = SequentialCommandBuilder()
+    builder.initializer()
+    return builder.asCommand()
 }
 
 /**
- * Delegated [SequentialCommandGroup] builder.
- *
- * Creates a delegated property that generates a new command each time.
+ * Create a new [SequentialCommandGroup] delegate using a builder.
  *
  * @param initializer The builder body
  */
-class SequentialCommandBuilder(
-    initializer: SequentialCommandChain.() -> Unit
-): ReadOnlyProperty<Any?, SequentialCommandGroup> {
-    private val chain = SequentialCommandChain()
-    init {
-        chain.initializer()
-    }
-
-    override fun getValue(thisRef: Any?, property: KProperty<*>): SequentialCommandGroup {
-        return chain.asCommand()
-    }
+fun buildSequentialCommandDelegate(initializer: SequentialCommandBuilder.() -> Unit): CommandDelegate {
+    return CommandDelegate{ buildSequentialCommand(initializer) }
 }
 
 /**
- * (INTERNAL) Sequential Command Builder Scope
+ * [SequentialCommandGroup] builder class
  */
-class SequentialCommandChain {
+class SequentialCommandBuilder {
 
     private var commands: List<Command> = listOf()
     private var requirements: Set<Subsystem> = setOf()
@@ -120,10 +107,10 @@ class SequentialCommandChain {
      * @param deadline The deadline command
      * @param sequence The sequence to run
      */
-    fun runWithDeadline(deadline: Command, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
-        chain.sequence()
-        commands += Commands.deadline(deadline, chain.asCommand())
+    fun runWithDeadline(deadline: Command, sequence: SequentialCommandBuilder.() -> Unit) {
+        val builder = SequentialCommandBuilder()
+        builder.sequence()
+        commands += Commands.deadline(deadline, builder.asCommand())
     }
 
     /**
@@ -142,10 +129,10 @@ class SequentialCommandChain {
      * @param timeout The timeout length
      * @param sequence The sequence to run
      */
-    fun runWithTimeout(timeout: Time, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
-        chain.sequence()
-        commands += Commands.race(Commands.waitTime(timeout), chain.asCommand())
+    fun runWithTimeout(timeout: Time, sequence: SequentialCommandBuilder.() -> Unit) {
+        val builder = SequentialCommandBuilder()
+        builder.sequence()
+        commands += Commands.race(Commands.waitTime(timeout), builder.asCommand())
     }
 
     /**
@@ -164,10 +151,10 @@ class SequentialCommandChain {
      * @param condition The timeout condition
      * @param sequence The sequence to run
      */
-    fun runUntil(condition: BooleanSupplier, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
-        chain.sequence()
-        commands += Commands.race(Commands.waitUntil(condition), chain.asCommand())
+    fun runUntil(condition: BooleanSupplier, sequence: SequentialCommandBuilder.() -> Unit) {
+        val builder = SequentialCommandBuilder()
+        builder.sequence()
+        commands += Commands.race(Commands.waitUntil(condition), builder.asCommand())
     }
 
     /**
@@ -186,10 +173,10 @@ class SequentialCommandChain {
      * @param condition The execution condition
      * @param sequence The sequence to run
      */
-    fun runWhile(condition: BooleanSupplier, sequence: SequentialCommandChain.() -> Unit) {
-        val chain = SequentialCommandChain()
-        chain.sequence()
-        commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, chain.asCommand())
+    fun runWhile(condition: BooleanSupplier, sequence: SequentialCommandBuilder.() -> Unit) {
+        val builder = SequentialCommandBuilder()
+        builder.sequence()
+        commands += Commands.race(Commands.waitUntil { !condition.asBoolean }, builder.asCommand())
     }
 
     /**
@@ -238,7 +225,7 @@ class SequentialCommandChain {
     }
 
     /**
-     * (INTERNAL) Get the builder as a [SequentialCommandGroup]
+     * Get the builder as a [SequentialCommandGroup]
      */
     fun asCommand(): SequentialCommandGroup {
         val group = SequentialCommandGroup(*commands.toTypedArray())

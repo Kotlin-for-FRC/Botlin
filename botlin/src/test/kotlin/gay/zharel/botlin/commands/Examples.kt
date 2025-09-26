@@ -48,10 +48,10 @@ val sequence2 = buildSequence {
 class BuilderExampleTest : CommandTestBase() {
     @Test
     fun `test sequence builder`() {
-        scheduler.schedule(sequence2)
-        assertTrue(scheduler.isScheduled(sequence2))
+        Scheduler.schedule(sequence2)
+        assertTrue(Scheduler.isScheduled(sequence2))
         while (sequence2.isScheduled) {
-            scheduler.run()
+            Scheduler.run()
         }
     }
 }

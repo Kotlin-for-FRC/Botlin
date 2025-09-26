@@ -6,14 +6,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import org.junit.jupiter.api.BeforeEach
 
 abstract class CommandTestBase {
-    inline val scheduler: CommandScheduler get() = CommandScheduler.getInstance()
-
     @BeforeEach
     fun commandSetup() {
-        scheduler.cancelAll()
-        scheduler.enable()
-        scheduler.clearComposedCommands()
-        scheduler.unregisterAllSubsystems()
+        Scheduler.cancelAll()
+        Scheduler.enable()
+        Scheduler.clearComposedCommands()
+        Scheduler.unregisterAllSubsystems()
 
         setDSEnabled(true)
     }

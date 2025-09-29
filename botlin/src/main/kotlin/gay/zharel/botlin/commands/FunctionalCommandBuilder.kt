@@ -7,46 +7,31 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand
 import edu.wpi.first.wpilibj2.command.Subsystem
 import java.util.function.BooleanSupplier
 import java.util.function.Consumer
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
 /**
  * Create a new [FunctionalCommand] using a builder.
  *
  * @param initializer The builder body
  */
-fun buildFunctionalCommand(initializer: FunctionalCommandChain.() -> Unit): Command {
-    val chain = FunctionalCommandChain()
-    chain.initializer()
-    return chain.asCommand()
+fun buildFunctionalCommand(initializer: FunctionalCommandBuilder.() -> Unit): Command {
+    val builder = FunctionalCommandBuilder()
+    builder.initializer()
+    return builder.asCommand()
 }
 
 /**
- * Delegated [FunctionalCommand] builder.
- *
- * Creates a delegated property that generates a new command each time.
+ * Create a new [FunctionalCommand] delegate using a builder.
  *
  * @param initializer The builder body
  */
-class FunctionalCommandBuilder(
-    initializer: FunctionalCommandChain.() -> Unit
-): ReadOnlyProperty<Any?, FunctionalCommand> {
-
-    private val chain = FunctionalCommandChain()
-    init {
-        chain.initializer()
-    }
-
-    override fun getValue(thisRef: Any?, property: KProperty<*>): FunctionalCommand {
-        return chain.asCommand()
-    }
-
+fun buildFunctionalCommandDelegate(initializer: FunctionalCommandBuilder.() -> Unit): CommandDelegate {
+    return CommandDelegate{ buildFunctionalCommand(initializer) }
 }
 
 /**
- * (INTERNAL) Function Command Builder Scope
+ * [FunctionalCommand] builder class
  */
-class FunctionalCommandChain {
+class FunctionalCommandBuilder {
 
     private var requirements: Set<Subsystem> = setOf()
 
@@ -101,7 +86,7 @@ class FunctionalCommandChain {
     }
 
     /**
-     * (INTERNAL) Get the builder as a [FunctionalCommand]
+     * Get the builder as a [FunctionalCommand]
      */
     fun asCommand(): FunctionalCommand {
         return FunctionalCommand(

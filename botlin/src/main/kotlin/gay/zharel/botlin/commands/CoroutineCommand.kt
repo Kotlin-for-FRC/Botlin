@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Subsystem
 import edu.wpi.first.wpilibj2.command.button.Trigger
+import gay.zharel.botlin.triggers.ScopedTrigger
 import gay.zharel.botlin.units.seconds
 import java.util.function.BooleanSupplier
 import java.util.function.Supplier
@@ -101,13 +102,11 @@ private enum class CoroutineState {
 abstract class CoroutineCommandIteratorScope {
 
     /**
-     * Creates a new trigger based on the given condition.
+     * Creates a new command-scoped trigger based on the given condition.
      *
-     * Polled by the default local event loop
-     *
-     * @param condition The condition represented by this trigger
+     * @param condition The condition represented by this trigger.
      */
-    abstract fun Trigger(condition: BooleanSupplier): Trigger
+    abstract fun ScopedTrigger(condition: BooleanSupplier): ScopedTrigger
 
     /**
      * Yield execution back to the command scheduler.
@@ -221,8 +220,12 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
     /**
      * (INTERNAL) Bounded trigger creation
      */
-    override fun Trigger(condition: BooleanSupplier): Trigger {
-        return Trigger(localEventLoop, condition)
+    override fun ScopedTrigger(condition: BooleanSupplier): ScopedTrigger {
+        return ScopedTrigger(
+            localEventLoop,
+            { state != CoroutineState.FINISHED && state != CoroutineState.FAILED },
+            condition
+        )
     }
 
     /**
@@ -241,6 +244,9 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
      */
     override fun resumeWith(result: Result<Unit>) {
         state = CoroutineState.FINISHED
+
+        // make sure to poll the event loop to cancel any bound scheduled commands
+        localEventLoop.poll()
     }
 
     /**

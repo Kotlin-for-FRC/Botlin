@@ -5,9 +5,16 @@ import edu.wpi.first.wpilibj2.command.Command
 import edu.wpi.first.wpilibj2.command.CommandScheduler
 import java.util.function.BooleanSupplier
 
+/**
+ * Creates a new scoped trigger based on the given condition and scope.
+ *
+ * @param loop The loop instance that polls this trigger.
+ * @param scope The scope condition.
+ * @param condition The condition represented by this trigger.
+ */
 class ScopedTrigger(
-    val loop: EventLoop,
-    val scope: BooleanSupplier = BooleanSupplier { true },
+    val loop: EventLoop = CommandScheduler.getInstance().defaultButtonLoop,
+    var scope: BooleanSupplier = BooleanSupplier { true },
     val condition: BooleanSupplier
 ): BooleanSupplier {
 
@@ -35,6 +42,12 @@ class ScopedTrigger(
         ))
     }
 
+    /**
+     * Starts the given command when the condition changes.
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
     fun onChange(command: Command): ScopedTrigger {
         addBinding {
             previous, current, previousScope, currentScope ->
@@ -47,6 +60,12 @@ class ScopedTrigger(
         return this
     }
 
+    /**
+     * Starts the given command whenever the condition changes from `false` to `true`.
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
     fun onTrue(command: Command): ScopedTrigger {
         addBinding {
             previous, current, previousScope, currentScope ->
@@ -59,6 +78,12 @@ class ScopedTrigger(
         return this
     }
 
+    /**
+     * Starts the given command whenever the condition changes from `true` to `false`.
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
     fun onFalse(command: Command): ScopedTrigger {
         addBinding {
             previous, current, previousScope, currentScope ->
@@ -71,6 +96,16 @@ class ScopedTrigger(
         return this
     }
 
+    /**
+     * Starts the given command when the condition changes to `true` and cancels it when the condition
+     * changes to `false`.
+     *
+     * Doesn't re-start the command if it ends while the condition is still `true`. If the command
+     * should restart, see [edu.wpi.first.wpilibj2.command.RepeatCommand]
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
     fun whileTrue(command: Command): ScopedTrigger {
         addBinding {
                 previous, current, previousScope, currentScope ->
@@ -84,6 +119,16 @@ class ScopedTrigger(
         return this
     }
 
+    /**
+     * Starts the given command when the condition changes to `false` and cancels it when the condition
+     * changes to `true`.
+     *
+     * Doesn't re-start the command if it ends while the condition is still `false`. If the command
+     * should restart, see [edu.wpi.first.wpilibj2.command.RepeatCommand]
+     *
+     * @param command the command to start
+     * @return this trigger, so calls can be chained
+     */
     fun whileFalse(command: Command): ScopedTrigger {
         addBinding {
                 previous, current, previousScope, currentScope ->
@@ -97,6 +142,12 @@ class ScopedTrigger(
         return this
     }
 
+    /**
+     * Toggles a command when the condition changes from `false` to `true`.
+     *
+     * @param command the command to toggle
+     * @return this trigger, so calls can be chained
+     */
     fun toggleOnTrue(command: Command): ScopedTrigger {
         addBinding {
             previous, current, previousScope, currentScope ->
@@ -113,6 +164,12 @@ class ScopedTrigger(
         return this
     }
 
+    /**
+     * Toggles a command when the condition changes from `true` to `false`.
+     *
+     * @param command the command to toggle
+     * @return this trigger, so calls can be chained
+     */
     fun toggleOnFalse(command: Command): ScopedTrigger {
         addBinding {
                 previous, current, previousScope, currentScope ->
@@ -131,30 +188,133 @@ class ScopedTrigger(
 
     override fun getAsBoolean(): Boolean = condition.asBoolean && scope.asBoolean
 
+    /**
+     * Bind this trigger to a specific command.
+     *
+     * @param command The command to bind to
+     */
+    fun bind(command: Command) {
+        scope = BooleanSupplier {
+            CommandScheduler.getInstance().isScheduled(command)
+        }
+    }
+
+    /**
+     * Infix boolean AND
+     */
     infix fun and(trigger: ScopedTrigger) = ScopedTrigger(
         loop,
         {scope.asBoolean && trigger.scope.asBoolean},
         {condition.asBoolean && trigger.condition.asBoolean}
     )
+
+    /**
+     * Infix boolean AND
+     */
     infix fun and(trigger: BooleanSupplier) = ScopedTrigger(
         loop,
         scope,
         {condition.asBoolean && trigger.asBoolean}
     )
 
+    /**
+     * Infix boolean NAND
+     */
+    infix fun nand(trigger: ScopedTrigger) = ScopedTrigger(
+        loop,
+        {scope.asBoolean && trigger.scope.asBoolean},
+        {!(condition.asBoolean && trigger.condition.asBoolean)}
+    )
+
+    /**
+     * Infix boolean NAND
+     */
+    infix fun nand(trigger: BooleanSupplier) = ScopedTrigger(
+        loop,
+        scope,
+        {!(condition.asBoolean && trigger.asBoolean)}
+    )
+
+    /**
+     * Infix boolean OR
+     */
     infix fun or(trigger: ScopedTrigger) = ScopedTrigger(
         loop,
         {scope.asBoolean && trigger.scope.asBoolean},
-        {condition.asBoolean && trigger.condition.asBoolean}
+        {condition.asBoolean || trigger.condition.asBoolean}
     )
+
+    /**
+     * Infix boolean OR
+     */
     infix fun or(trigger: BooleanSupplier) = ScopedTrigger(
         loop,
         scope,
-        {condition.asBoolean && trigger.asBoolean}
+        {condition.asBoolean || trigger.asBoolean}
     )
 
+    /**
+     * Infix boolean NOR
+     */
+    infix fun nor(trigger: ScopedTrigger) = ScopedTrigger(
+        loop,
+        {scope.asBoolean && trigger.scope.asBoolean},
+        {!(condition.asBoolean || trigger.condition.asBoolean)}
+    )
+
+    /**
+     * Infix boolean NOR
+     */
+    infix fun nor(trigger: BooleanSupplier) = ScopedTrigger(
+        loop,
+        scope,
+        {!(condition.asBoolean || trigger.asBoolean)}
+    )
+
+    /**
+     * Infix boolean XOR
+     */
+    infix fun xor(trigger: ScopedTrigger) = ScopedTrigger(
+        loop,
+        {scope.asBoolean && trigger.scope.asBoolean},
+        { condition.asBoolean || trigger.condition.asBoolean && !(condition.asBoolean && trigger.condition.asBoolean) }
+    )
+
+    /**
+     * Infix boolean XOR
+     */
+    infix fun xor(trigger: BooleanSupplier) = ScopedTrigger(
+        loop,
+        scope,
+        { condition.asBoolean || trigger.asBoolean && !(condition.asBoolean && trigger.asBoolean) }
+    )
+
+    /**
+     * Infix boolean XNOR
+     */
+    infix fun xnor(trigger: ScopedTrigger) = ScopedTrigger(
+        loop,
+        {scope.asBoolean && trigger.scope.asBoolean},
+        { condition.asBoolean && trigger.condition.asBoolean || !(condition.asBoolean || trigger.condition.asBoolean) }
+    )
+
+    /**
+     * Infix boolean XNOR
+     */
+    infix fun xnor(trigger: BooleanSupplier) = ScopedTrigger(
+        loop,
+        scope,
+        { condition.asBoolean && trigger.asBoolean || !(condition.asBoolean || trigger.asBoolean) }
+    )
+
+    /**
+     * Boolean NOT
+     */
     operator fun not(): ScopedTrigger = ScopedTrigger(loop, scope, { !condition.asBoolean })
 
+    /**
+     * Boolean NOT
+     */
     fun negate(): ScopedTrigger = !this
 
 }

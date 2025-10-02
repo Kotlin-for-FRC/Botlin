@@ -61,7 +61,7 @@ java {
 }
 
 def artifactGroupId = 'gay.zharel.botlin'
-def baseArtifactId = 'botlin'
+def baseArtifactId = 'commands'
 
 deployer {
     projectInfo {

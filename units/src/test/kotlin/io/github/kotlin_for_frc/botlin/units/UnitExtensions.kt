@@ -1,4 +1,4 @@
-package gay.zharel.botlin.units
+package io.github.kotlin_for_frc.botlin.units
 
 import edu.wpi.first.units.Units.*
 import org.junit.jupiter.api.Assertions.assertEquals

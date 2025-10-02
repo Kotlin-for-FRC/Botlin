@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package gay.zharel.botlin.units
+package io.github.kotlin_for_frc.botlin.units
 
 import edu.wpi.first.units.*
 import edu.wpi.first.units.Unit

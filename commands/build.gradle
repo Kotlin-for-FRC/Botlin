@@ -60,7 +60,7 @@ java {
     withJavadocJar()
 }
 
-def artifactGroupId = 'gay.zharel.botlin'
+def artifactGroupId = 'io.github.kotlin_for_frc.botlin'
 def baseArtifactId = 'commands'
 
 deployer {

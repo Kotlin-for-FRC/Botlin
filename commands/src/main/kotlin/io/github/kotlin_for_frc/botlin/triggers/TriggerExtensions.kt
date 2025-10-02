@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package gay.zharel.botlin.triggers
+package io.github.kotlin_for_frc.botlin.triggers
 
 import java.util.function.BooleanSupplier
 import edu.wpi.first.wpilibj2.command.button.Trigger

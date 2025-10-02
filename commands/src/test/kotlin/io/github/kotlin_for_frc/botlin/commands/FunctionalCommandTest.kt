@@ -1,4 +1,4 @@
-package gay.zharel.botlin.commands
+package io.github.kotlin_for_frc.botlin.commands
 
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue

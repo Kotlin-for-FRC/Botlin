@@ -1,6 +1,6 @@
 @file:Suppress("unused")
 
-package gay.zharel.botlin.commands
+package io.github.kotlin_for_frc.botlin.commands
 
 import edu.wpi.first.units.measure.Time
 import edu.wpi.first.wpilibj2.command.Command

@@ -1,4 +1,4 @@
-package gay.zharel.botlin.commands
+package io.github.kotlin_for_frc.botlin.commands
 
 import edu.wpi.first.wpilibj.DriverStation
 import edu.wpi.first.wpilibj.simulation.DriverStationSim

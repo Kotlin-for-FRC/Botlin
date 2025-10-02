@@ -8,7 +8,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/botlin" />
+            <option value="$PROJECT_DIR$/commands" />
             <option value="$PROJECT_DIR$/units" />
           </set>
         </option>

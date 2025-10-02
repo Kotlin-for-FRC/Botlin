@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel target="17" />
+    <bytecodeTargetLevel target="17">
+      <module name="Botlin.botlin" target="21" />
+      <module name="Botlin.botlin.main" target="21" />
+      <module name="Botlin.botlin.test" target="21" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Botlin.botlin" options="-XDstringConcat=inline" />
       <module name="Botlin.botlin.main" options="-XDstringConcat=inline" />
       <module name="Botlin.botlin.test" options="-XDstringConcat=inline" />
+      <module name="Botlin.commands" options="-XDstringConcat=inline" />
+      <module name="Botlin.commands.main" options="-XDstringConcat=inline" />
+      <module name="Botlin.commands.test" options="-XDstringConcat=inline" />
       <module name="Botlin.units" options="-XDstringConcat=inline" />
       <module name="Botlin.units.main" options="-XDstringConcat=inline" />
       <module name="Botlin.units.test" options="-XDstringConcat=inline" />

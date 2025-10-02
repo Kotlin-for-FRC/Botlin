@@ -10,14 +10,14 @@
     "jsonUrl": "",
     "javaDependencies": [
         {
-            "groupId": "gay.zharel.botlin",
-            "artifactId": "botlin",
-            "version": "2025.0.0"
+            "groupId": "io.github.kotlin_for_frc.botlin",
+            "artifactId": "commands",
+            "version": "0.1.0"
         },
         {
-            "groupId": "gay.zharel.botlin",
+            "groupId": "io.github.kotlin_for_frc.botlin",
             "artifactId": "units",
-            "version": "2025.0.0"
+            "version": "0.1.0"
         }
     ],
     "jniDependencies": [],

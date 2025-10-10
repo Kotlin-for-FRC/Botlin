@@ -4,6 +4,15 @@ Simple syntax sugar and enhancements for Kotlin users of WPIlib
 Online installation coming soon, for now follow the local build instructions
 
 ## Features
+Advanced unit literals
+```kt
+val weight = 123.kilograms
+val kV = 12.volts/meter
+val batteryPercentageLose = 1.percent per minute
+val consumption = 123.watt * minutes
+val temperateAccel = 1.kelvin per seconds.squared
+```
+
 Easy-to-use trigger operations
 ```kt
 val a = Trigger { /*...*/ }
@@ -13,13 +22,57 @@ val d = !a or b
 val e = c xnor d
 ```
 
-Advanced unit literals
+Delegated command builders 
 ```kt
-val weight = 123.kilograms
-val kV = 12.volts/meter
-val batteryPercentageLose = 1.percent per minute
-val consumption = 123.watt * minutes
-val temperateAccel = 1.kelvin per seconds.squared
+val myCommand by buildSequentialCommandDelegate {
+    requires(MySubsystem)
+    
+    runCommand(MySubsystem.command1)
+    
+    waitTime(500.milliseconds)
+    
+    runWithTimeout(1.5.seconds) {
+        runCommand(MySubsystem.command2)
+        runCommand(MySubsystem.command3)
+    }
+}
+val myOtherCommand by buildFunctionalCommandDelegate {
+    requires(MySubsystem)
+    start { 
+        println("Starting") 
+    }
+    execute { 
+        println("Executing") 
+    }
+    end { 
+        interrupted -> 
+        println("Ended. Interrupted: $interrupted") 
+    }
+    isFinished { MySubsystem.isCommandFinished }
+}
+```
+
+Coroutine commands (using  WPILib 2026!)
+```kt
+val myCORCommand by coroutineCommandDelegate {
+    var x = 0
+    while(x < 10) {
+        println("COR command 1: $x")
+        wait(500.milliseconds)
+        x++
+    }
+}
+val my2ndCORCommand = CoroutineCommand {
+    var y = 0
+    while(y < 10) {
+        println("COR command 2: $y")
+        wait(500.milliseconds)
+        if(y == 5) {
+            await(myCORCommand)
+        }
+        y++
+    }
+}
 ```
 
 And more to come!

@@ -24,7 +24,7 @@ val e = c xnor d
 
 Delegated command builders 
 ```kt
-val myCommand by buildFunctionalCommandDelegate {
+val myCommand by buildSequentialCommandDelegate {
     requires(MySubsystem)
     
     runCommand(MySubsystem.command1)
@@ -52,7 +52,7 @@ val myOtherCommand by buildFunctionalCommandDelegate {
 }
 ```
 
-Coroutine commands (without wpilib2027!)
+Coroutine commands (using wpilib2026!)
 ```kt
 val myCORCommand by coroutineCommandDelegate {
     var x = 0

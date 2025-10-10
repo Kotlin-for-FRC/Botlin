@@ -54,7 +54,7 @@ class CoroutineCommand(
     }
 
     /**
-     * (INTERNAL) Command initialization function
+     * Command initialization function
      */
     override fun initialize() {
         // create continuation and start executing
@@ -63,24 +63,21 @@ class CoroutineCommand(
     }
 
     /**
-     * (INTERNAL) Command execution function
+     * Command execution function
      */
     override fun execute() = coroutine.iterate()
 
     /**
-     * (INTERNAL) Command finishing condition
+     * Command finishing condition
      */
     override fun isFinished(): Boolean = coroutine.finished
 
     /**
-     * (INTERNAL) Command runs when disabled
+     * Command runs when disabled
      */
     override fun runsWhenDisabled(): Boolean = runsWhileDisabled
 }
 
-/**
- * (INTERNAL) coroutine state enum
- */
 private enum class CoroutineState {
     NOT_READY,
     READY,
@@ -89,7 +86,7 @@ private enum class CoroutineState {
 }
 
 /**
- * (INTERNAL) Functional scope of a coroutine command
+ * Functional scope of a coroutine command
  *
  * Gives methods such as `yield`, `waitUntil`, `wait`, and `await`,
  * while allowing other internal iterator functions to remain hidden.
@@ -144,17 +141,16 @@ abstract class CoroutineCommandIteratorScope {
      *
      * @param command The command to await
      */
-    suspend fun await(command: Supplier<Command>) {
-        val cmd = command.get()
-        CommandScheduler.getInstance().schedule(cmd)
-        while(!cmd.isFinished) {
+    suspend fun await(command: Command) {
+        CommandScheduler.getInstance().schedule(command)
+        while(!command.isFinished) {
             yield()
         }
     }
 }
 
 /**
- * (INTERNAL) Coroutine command iterator
+ * Coroutine command iterator
  *
  * Essentially a sequence<Unit>
  */
@@ -164,7 +160,7 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
     var nextStep: Continuation<Unit>? = null
 
     /**
-     * (INTERNAL) perform one iteration
+     * perform one iteration
      */
     fun iterate() {
         // until iterator ready
@@ -201,7 +197,7 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
     }
 
     /**
-     * (INTERNAL) Coroutine yield logic
+     * Coroutine yield logic
      */
     override suspend fun yield() {
         state = CoroutineState.READY
@@ -212,20 +208,20 @@ private class CoroutineCommandIterator: CoroutineCommandIteratorScope(), Continu
     }
 
     /**
-     * (INTERNAL) Coroutine finishing logic
+     * Coroutine finishing logic
      */
     override fun resumeWith(result: Result<Unit>) {
         state = CoroutineState.FINISHED
     }
 
     /**
-     * (INTERNAL) Coroutine context
+     * Coroutine context
      */
     override val context: CoroutineContext
         get() = EmptyCoroutineContext
 
     /**
-     * (INTERNAL) Coroutine finished state
+     * Coroutine finished state
      */
     val finished: Boolean
         get() = state == CoroutineState.FINISHED

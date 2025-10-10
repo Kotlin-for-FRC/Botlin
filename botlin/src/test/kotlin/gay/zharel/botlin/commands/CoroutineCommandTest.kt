@@ -27,7 +27,7 @@ class CoroutineCommandTest {
                 x++
                 println("my2ndCORCommand: $x")
                 if(x == 5) {
-                    await { myCORCommand }
+                    await(myCORCommand)
                 }
                 wait(0.5.seconds)
             }

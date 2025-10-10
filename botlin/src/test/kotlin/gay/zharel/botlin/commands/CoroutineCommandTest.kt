@@ -1,10 +1,11 @@
 package gay.zharel.botlin.commands
 
 import gay.zharel.botlin.units.seconds
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-class CoroutineCommandTest {
+class CoroutineCommandTest : CommandTestBase() {
 
     @Test
     fun `test CoroutineCommandBuilder + CoroutineCommand`() {
@@ -47,10 +48,6 @@ class CoroutineCommandTest {
 
     @Test
     fun `test command scheduler`() {
-
-        Scheduler.cancelAll()
-        Scheduler.enable()
-
         val myCommand = CoroutineCommand(runsWhileDisabled = true) {
             yield()
             yield()
@@ -63,7 +60,28 @@ class CoroutineCommandTest {
         Scheduler.run()
 
         assertTrue(Scheduler.isScheduled(myCommand))
-
     }
 
+    @Test
+    fun `test iterations`() {
+        val list = mutableListOf<Int>()
+        val command = CoroutineCommand(runsWhileDisabled = true) {
+            repeat(5) {
+                list.add(it)
+                yield()
+            }
+        }
+
+        Scheduler.schedule(command)
+        Scheduler.run()
+        assertEquals(list, listOf(0))
+        Scheduler.run()
+        assertEquals(list, listOf(0, 1))
+        Scheduler.run()
+        assertEquals(list, listOf(0, 1, 2))
+        Scheduler.run()
+        assertEquals(list, listOf(0, 1, 2, 3))
+        Scheduler.run()
+        assertEquals(list, listOf(0, 1, 2, 3, 4))
+    }
 }

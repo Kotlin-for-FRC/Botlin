@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler
 import edu.wpi.first.wpilibj2.command.Subsystem
 import gay.zharel.botlin.units.seconds
 import java.util.function.BooleanSupplier
-import java.util.function.Supplier
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext

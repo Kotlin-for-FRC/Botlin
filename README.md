@@ -52,7 +52,7 @@ val myOtherCommand by buildFunctionalCommandDelegate {
 }
 ```
 
-Coroutine commands (using wpilib2026!)
+Coroutine commands (using  WPILib 2026!)
 ```kt
 val myCORCommand by coroutineCommandDelegate {
     var x = 0

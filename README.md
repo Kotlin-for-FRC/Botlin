@@ -68,7 +68,7 @@ val my2ndCORCommand = CoroutineCommand {
         println("COR command 2: $y")
         wait(500.milliseconds)
         if(y == 5) {
-            await { myCORCommand }
+            await(myCORCommand)
         }
         y++
     }

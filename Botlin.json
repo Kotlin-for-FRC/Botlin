@@ -7,7 +7,7 @@
     "mavenUrls": [
         "https://repo1.maven.org/maven2/"
     ],
-    "jsonUrl": "",
+    "jsonUrl": "https://raw.githubusercontent.com/Kotlin-for-FRC/Botlin/refs/heads/main/Botlin.json",
     "javaDependencies": [
         {
             "groupId": "gay.zharel.botlin",

@@ -5,6 +5,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'maven-publish'
     id "io.deepmedia.tools.deployer"
+    id "org.jetbrains.dokka"
 }
 
 if (project.hasProperty('releaseMode')) {
@@ -44,7 +45,16 @@ java {
     targetCompatibility = JavaVersion.toVersion(javaVersion)
 
     withSourcesJar()
-    withJavadocJar()
+}
+
+def dokkaJar = tasks.register("dokkaJar", Jar) {
+    dependsOn tasks.named("dokkaGenerate")
+    from dokka.basePublicationsDirectory.dir("html")
+    archiveClassifier = "html-docs"
+}
+
+artifacts {
+    archives(dokkaJar)
 }
 
 def artifactGroupId = 'gay.zharel.botlin'

@@ -1,7 +1,7 @@
 {
     "fileName": "Botlin.json",
     "name": "Botlin",
-    "version": "2025.0.0",
+    "version": "0.1.0",
     "frcYear": "2025",
     "uuid": "be9dba85-3c58-45e6-b376-070f1102e122",
     "mavenUrls": [
@@ -12,12 +12,12 @@
         {
             "groupId": "gay.zharel.botlin",
             "artifactId": "botlin",
-            "version": "2025.0.0"
+            "version": "0.1.0"
         },
         {
             "groupId": "gay.zharel.botlin",
             "artifactId": "units",
-            "version": "2025.0.0"
+            "version": "0.1.0"
         }
     ],
     "jniDependencies": [],

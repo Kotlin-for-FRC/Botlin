@@ -77,6 +77,7 @@ inline val Frequency.millihertz
     get() = this.to(Millihertz)
 
 // LINEAR ACCELERATION
+@JvmField
 val InchesPerSecondPerSecond: LinearAccelerationUnit = InchesPerSecond / Second
 
 inline val LinearAcceleration.metersPerSecondPerSecond

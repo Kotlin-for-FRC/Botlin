@@ -96,7 +96,7 @@ And more to come!
 ## Building locally
 If you want to contribute to the project, you need to build it locally. 
 
-Run `./gradlew publishToMavinLocal` to build the library. 
+Run `./gradlew publishToMavenLocal` to build the library. 
 
 For use in a project, copy the library JSON file into the `vendordeps` folder, and change the maven URL to: 
 - MACOS: `file:///Users/<name>/.m2/repository`

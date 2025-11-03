@@ -8,6 +8,9 @@ VSCode: Open the command palette, run `WPILib: Manage Vendor Libraries`,
 select `Install new libraries (online)`, 
 then input `https://raw.githubusercontent.com/Kotlin-for-FRC/Botlin/refs/heads/main/Botlin.json`
 
+## Docs
+Docs can be found at https://docs.botlin.zharel.gay/
+
 ## Features
 ### - Advanced unit literals
 ```kt

@@ -14,11 +14,18 @@ Docs can be found at https://docs.botlin.zharel.gay/
 ## Features
 ### - Advanced unit literals
 ```kt
+// generic literals (operator constructed + wpilib names)
 val weight = 123.kilograms
 val kV = 12.volts/meter
 val batteryPercentageLose = 1.percent per minute
 val consumption = 123.watt * minutes
 val acceleration = 1.meter per seconds.squared
+val acceleration2 = 1.metersPerSecondPerSecond
+
+// literals for metric prefixes not implemented by designated types
+// note that this does NOT work for things like `1.pico.square(meters)` as `.pico` directly multiplies the number
+// in that case, it would be pico square meters rather than square picometers
+val reallyPreciseLength = 1.23.pico.meters
 ```
 
 ### - Easy-to-use trigger operations
@@ -31,9 +38,24 @@ val e = c xnor d
 // !, and, or, xor, nand, nor, xnor 
 ```
 
-### - Delegated command builders 
+### - Command builders 
 ```kt
-val myCommand by buildSequentialCommandDelegate {
+// undelegated version, wrap this in a factory
+val myCommand = buildSequentialCommand {
+    requires(MySubsystem)
+
+    runCommand(MySubsystem.command1)
+
+    waitTime(500.milliseconds)
+
+    runWithTimeout(1.5.seconds) {
+        runCommand(MySubsystem.command2)
+        runCommand(MySubsystem.command3)
+    }
+}
+
+// delegated version, automatic factory
+val myCommandDelegated by buildSequentialCommandDelegate {
     requires(MySubsystem)
     
     runCommand(MySubsystem.command1)
@@ -45,7 +67,23 @@ val myCommand by buildSequentialCommandDelegate {
         runCommand(MySubsystem.command3)
     }
 }
-val myOtherCommand by buildFunctionalCommandDelegate {
+
+val myOtherCommand = buildFunctionalCommand {
+    requires(MySubsystem)
+    start {
+        println("Starting")
+    }
+    execute {
+        println("Executing")
+    }
+    end {
+            interrupted ->
+        println("Ended. Interrupted: $interrupted")
+    }
+    isFinished { MySubsystem.isCommandFinished }
+}
+
+val myOtherCommandDelegated by buildFunctionalCommandDelegate {
     requires(MySubsystem)
     start { 
         println("Starting") 
@@ -88,6 +126,9 @@ val my2ndCORCommand = CoroutineCommand(requirements = setOf(MySubsystem)) {
  * - waitWhile(condition): wait while condition is true
  * - wait(time): wait an amount of time
  * - await(command): schedule and wait for another command
+ * 
+ * This runs via the command scheduler, not one of kotlin's built in coroutine runners,
+ * allowing for methods and utilities which require a constant period to be used
  */
 ```
 
